@@ -1,0 +1,105 @@
+@font-face {
+    font-family: "Montserrat-Black";
+    src: url("/src/assets/fonts/Montserrat-Black.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Montserrat-Medium";
+    src: url("/src/assets/fonts/Montserrat-Medium.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+body,
+h2,
+h4,
+p {
+    font-family: 'Montserrat-Medium';
+}
+
+h5 {
+    font-family: 'Montserrat-Black';
+}
+
+// Main
+$black: black;
+$white: #FFFFFF;
+$mainBlue: #697FAA;
+$mainDark: #333333;
+$mainOrange: #F6990D;
+$darkGray: #e0e0e0;
+$lightGray: #f2f2f2;
+
+
+//DEPR
+
+$primary: #DD6039;
+$secondary: #535C91;
+$tertiary : #3A3A3C;
+$warning: #F6990D;
+
+
+
+$text: #333333;
+$primary-neutral: #FFFFFF;
+$secondary-neutral: #f2f2f2;
+$tertiary-neutral: #ffffff;
+
+$status-success: #6ABB5E;
+$status-default: #939393;
+$status-error: #D81919;
+$status-disabled: #EAEAEA;
+
+// Blue Color Palette
+$blue1: #cdfafa;
+$blue2: #0ac8b9;
+$blue3: #0397ab;
+$blue4: #005a82;
+$blue5: #0a323c;
+$blue6: #091428;
+$blue7: #0a1428;
+
+// Gold Color Palette
+$gold1: #f0e6d2;
+$gold2: #c8aa6e;
+$gold3: #c8aa6e;
+$gold4: #c89b3c;
+$gold5: #785a28;
+$gold6: #463714;
+$gold7: #32281e;
+
+// Gray Color Palette
+$gray1: #a09b8c;
+$gray2: #5b5a56;
+$gray3: #3c3c41;
+$gray4: #1e2328;
+$grayCool: #1e282d;
+$hexBlack: #010a13;
+$grayText: #b2b2b2;
+$grayTextLight: #c7c7c9;
+$textMedium: 26px;
+
+$placeholderText: #9c9c9c;
+$blackText: #333333;
+
+// SIZES
+$x-small: 0.5rem;
+$small: 0.6rem;
+$regular: 0.7rem;
+$normal: 1rem;
+$large: 1.5rem;
+$bigDescription: 20px;
+$mainTitle: 40px;
+$bigTitle: 60px;
+
+// WEIGHT
+$light: 300;
+$heavy: 700;
+$superHeavy: 800;
+
+
+$MontserratBlack: 'Montserrat-Black';
+$Montserrat: 'Montserrat-Medium';

@@ -1,0 +1,52 @@
+@import "../../assets/styles";
+
+// .checkboxContainer {
+//     display: inline-block;
+//     width: 25px;
+//     height: 25px;
+//     background-color: #d0d0d0;
+//     /* Color de fondo por defecto más oscuro */
+//     border: 1px solid #000;
+//     /* Borde para el checkbox */
+//     border-radius: 5px;
+//     /* Opcional: si quieres bordes redondeados */
+//     position: relative;
+//     cursor: pointer;
+//     /* Cambia el cursor a mano al pasar el mouse */
+// }
+
+.checkboxInput {
+    // opacity: 0;
+    // position: absolute;
+    // width: 30px !important;
+    // height: 30px !important;
+
+    width: 1.5rem !important;
+    height: 1.5rem !important;
+    cursor: pointer;
+    margin-right: 1rem !important;
+    /* Asegura que el cursor también sea mano cuando esté sobre el input */
+}
+
+// .checkboxInput:checked+.checkboxVisual {
+//     background-color: #4472C4;
+//     /* Color de fondo cuando está marcado */
+// }
+
+// .checkboxVisual {
+//     width: 100%;
+//     height: 100%;
+//     border-radius: 5px;
+//     /* Opcional: si quieres bordes redondeados */
+//     position: absolute;
+//     top: 0;
+//     left: 0;
+//     transition: background-color 0.2s;
+//     /* Transición suave del color de fondo */
+// }
+
+// /* Estilo para cuando se pasa el mouse por encima */
+// .checkboxContainer:hover .checkboxVisual {
+//     background-color: #b0b0b0;
+//     /* Un color intermedio al pasar el mouse por encima */
+// }

@@ -1,0 +1,78 @@
+@import "../../assets/styles/base/variables";
+
+.auth-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: $tertiary-neutral;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  padding-left: 5rem;
+}
+
+.brand-img {
+  max-width: 150px;
+}
+
+.header-text {
+  font-family: $MontserratBlack !important;
+  font-size: 1.5rem !important;
+  color: $warning;
+  font-weight: bolder;
+}
+
+.header-icons {
+  font-size: 1.2rem !important;
+  color: $warning;
+}
+
+.header-button {
+  background-color: $primary !important;
+  color: $tertiary-neutral !important;
+}
+
+.header-button-variant {
+  font-size: 1.2rem !important;
+  color: $tertiary-neutral !important;
+}
+
+.icon-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  padding: 5px;
+  background-color: $primary;
+}
+
+.upper-header {
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  padding-right: 5rem;
+  display: flex;
+  width: 100%;
+  background-color: $secondary;
+  color: $tertiary-neutral;
+  font-size: 1rem;
+  justify-content: end;
+}
+
+.upper-text {
+  padding-left: 3.2rem;
+  color: $tertiary-neutral;
+  font-size: 0.9rem !important;
+  font-family: "Montserrat-Medium";
+  cursor: pointer;
+
+  a {
+    text-decoration: none !important;
+    color: inherit;
+  }
+}
+
+.icon-container {
+  cursor: pointer;
+}

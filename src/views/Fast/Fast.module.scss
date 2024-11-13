@@ -1,0 +1,27 @@
+@import "../../assets/styles";
+
+.wrapper {
+  display: flex;
+  width: 90%;
+  flex-direction: column;
+  padding: 3rem 5rem;
+  min-height: 76vh;
+  margin: 0 auto !important;
+}
+
+.submitButton {
+  background-color: $primary !important;
+  color: $white !important;
+}
+
+.cancelButton {
+  color: $primary !important;
+  border-color: $primary !important;
+}
+
+.title {
+  font-family: $ !important;
+  font-size: 2rem;
+  color: $warning;
+  padding-left: 1rem;
+}

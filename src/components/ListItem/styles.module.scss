@@ -1,0 +1,53 @@
+@import "../../assets/styles";
+
+$size: 30px;
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding-bottom: 1.5rem;
+}
+
+.circle {
+  border-radius: 50%;
+  background-color: $mainOrange;
+  height: $size;
+  width: $size;
+  min-width: $size;
+  min-height: $size;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.number {
+  color: $white;
+  font-size: $size;
+  font-weight: bold;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.services {
+  margin-left: 2rem !important;
+}
+
+.list-item {
+  font-size: $size;
+  font-weight: bold;
+  color: $mainBlue;
+  text-decoration: underline #009999;
+
+  &:hover {
+    text-decoration: underline #009999;
+    cursor: pointer;
+  }
+}
+
+.list-item-description {
+  color: $blackText;
+  font-weight: bold;
+}

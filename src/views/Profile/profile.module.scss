@@ -1,0 +1,30 @@
+@import "../../assets/styles";
+
+.custom-textfield {
+  height: 2rem;
+  /* Ajusta el valor según tus necesidades */
+}
+
+.title {
+  color: $primary;
+  font-weight: bolder !important;
+
+}
+
+
+.buttons-save {
+  width: 15rem;
+}
+
+.buttons-profile {
+  height: 3rem;
+  width: 10rem;
+
+}
+
+.img-profile-style {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 1em !important;
+}

@@ -1,0 +1,13 @@
+@import "../../../../assets/styles";
+
+.subtitle {
+  font-weight: bolder !important;
+  font-family: $MontserratBlack;
+  color: $warning;
+}
+
+
+.MuiBackdrop-root {
+  opacity: 1 !important;
+  /* Adjust the opacity value as needed */
+}

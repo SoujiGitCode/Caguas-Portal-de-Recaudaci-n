@@ -1,0 +1,26 @@
+{
+    "routes": [
+        {
+            "src": "/(.*).js",
+            "headers": {
+                "Cache-Control": "public, max-age=31536000, immutable"
+            }
+        },
+        {
+            "src": "/(.*).css",
+            "headers": {
+                "Cache-Control": "public, max-age=31536000, immutable"
+            }
+        },
+        {
+            "src": "/(.*).(jpg|jpeg|gif|png|svg|ico|bmp|tif|tiff|webp)",
+            "headers": {
+                "Cache-Control": "public, max-age=31536000, immutable"
+            }
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/index.html"
+        }
+    ]
+}

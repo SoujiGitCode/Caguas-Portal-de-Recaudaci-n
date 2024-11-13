@@ -1,0 +1,12 @@
+@import "../../../../assets/styles";
+
+.title {
+  font-weight: bolder !important;
+  font-family: $MontserratBlack;
+  color: $warning;
+}
+
+.button {
+  background-color: $primary !important;
+  color: $tertiary-neutral !important;
+}

@@ -1,0 +1,13 @@
+@import "../../assets/styles";
+
+.container {
+  background-color: $primary !important;
+  height: 100% !important;
+  width: 100%;
+  display: flex;
+  padding: 5rem 0 15rem 0;
+}
+
+.container>* {
+  margin-bottom: 3.2rem !important;
+}

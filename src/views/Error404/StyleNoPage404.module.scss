@@ -1,0 +1,55 @@
+@import "../../assets/styles";
+
+.title-404 {
+    color: $primary !important;
+    font-family: $MontserratBlack !important;
+    font-weight: bold !important;
+    font-size: $mainTitle !important;
+    margin-left: 3rem !important;
+    padding-left: 25%;
+}
+
+.sub-title {
+    font-family: $Montserrat !important;
+    font-weight: bold !important;
+    font-size: $textMedium !important;
+    padding-left: 20%;
+}
+
+.error-descriptions {
+    font-family: $Montserrat !important;
+    color: $gray2 !important;
+    padding-left: 8% !important;
+}
+
+.container-description-error {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem !important;
+    margin-left: 10rem !important;
+    width: 60% !important;
+    gap: 1rem !important;
+}
+
+.img-error {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+
+.button-page-main {
+    border-color: $primary !important;
+    color: $primary !important;
+    width: 18rem;
+    margin-top: 1rem !important;
+    padding: 0.7rem !important;
+}
+
+.button-new-request {
+    background-color: $primary !important;
+    width: 18rem;
+    margin-top: 1rem !important;
+    padding: 0.7rem !important;
+}

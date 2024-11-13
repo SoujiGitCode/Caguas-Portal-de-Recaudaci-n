@@ -1,0 +1,40 @@
+@import "../../assets/styles";
+
+.carouselTitle {
+    font-family: 'Montserrat-Medium';
+    font-size: 30px !important;
+    font-weight: 700 !important;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #FFFFFF;
+}
+
+.carouselText {
+    font-family: Montserrat;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: justified;
+    color: #FFFFFF;
+}
+
+.carouselButton {
+    height: auto;
+    padding: 8px 40px;
+    border-radius: 4px;
+    background-color: #F6990D !important;
+    font-family: 'Montserrat-Medium';
+    font-size: 1rem;
+    font-weight: 600 !important;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FFFFFF !important;
+}
+
+.carouselButton:hover {
+    background-color: #F6990D !important;
+    /* Ajusta según prefieras */
+}
