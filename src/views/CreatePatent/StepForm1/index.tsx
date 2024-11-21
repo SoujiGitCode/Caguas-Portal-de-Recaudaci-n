@@ -205,7 +205,7 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                                 error={formik.touched.general_social_security && Boolean(formik.errors.general_social_security)}
                                 helperText={formik.touched.general_social_security && formik.errors.general_social_security}
                                 inputProps={{
-                                    maxLength: 9, // Limitar el número máximo de caracteres
+                                    maxLength: 9
                                 }}
                             />
 

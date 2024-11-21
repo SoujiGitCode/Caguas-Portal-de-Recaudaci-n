@@ -1,10 +1,16 @@
 import api from "@/utils/services/api";
-import { patent, patentFiles, uploadPatentFile, submitPatent } from "@/utils";
+import { patent, patentFiles, uploadPatentFile, submitPatent, deleteSinglePatentFile } from "@/utils";
 
 
 export const makeStepAvailable = (currentStep: number, setStepValidity: (callback: (prev: boolean[]) => boolean[]) => void) => {
-  setStepValidity((prev) => prev.map((val, index) => (index === currentStep ? true : val)));
+  setStepValidity((prev) =>
+    prev.map((val, index) =>
+      // Habilitar el paso actual y el siguiente, pero sin exceder el índice del array
+      index === currentStep || index === currentStep + 1 ? true : val
+    )
+  );
 };
+
 
 
 export interface StepFormProps {
@@ -121,6 +127,13 @@ export type Ok = {
   code: number;
   message: string;
 };
+
+
+interface DeletePatentFileProp {
+  patent_id: string | number;
+  file_id: string | number;
+  token: string;
+}
 
 export const getPatentData = async (token: string) => {
   try {
@@ -420,6 +433,33 @@ export const uploadPatentFiles = async ({
     throw error;
   }
 
+};
+
+export const deletePatentFile = async ({
+  patent_id,
+  file_id,
+  token,
+}: {
+  patent_id: string | number;
+  file_id: string | number;
+  token: string;
+}) => {
+  try {
+    api.resource = deleteSinglePatentFile;
+    api.token = token;
+
+    const res = await api.delete({
+      body: JSON.stringify({
+        patent_id,
+        file_id,
+      }),
+    });
+
+    return res;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
 export const submitPatentRequest = async (patent_id: string, token: string) => {

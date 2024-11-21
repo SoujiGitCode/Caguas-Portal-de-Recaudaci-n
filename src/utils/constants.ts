@@ -19,6 +19,7 @@ export const patent = "/patent/register/";
 export const patentFiles = "/patent/register/files";
 export const uploadPatentFile = '/patent/register/file';
 export const submitPatent = '/patent/register/submit';
+export const deleteSinglePatentFile = '/patent/register/file'
 
 // export const documentCreate = "/document/create/";
 export const getDocuments = "/document/";

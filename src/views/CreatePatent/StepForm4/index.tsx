@@ -8,6 +8,25 @@ import { CustomLabel } from '@/components';
 import SimpleLoader from '@/components/SimpleLoader';
 import useFormikValidation from '@/hooks/useFormikValidation';
 
+interface FormValuesStep4 {
+    agent_info_first_name: string;
+    agent_info_second_name?: string;
+    agent_info_last_name: string;
+    agent_info_second_last_name?: string;
+    agent_info_email: string;
+    agent_info_role: string;
+    agent_info_social_security: string;
+    owner_info_first_name: string;
+    owner_info_second_name?: string;
+    owner_info_last_name: string;
+    owner_info_second_last_name?: string;
+    owner_info_email: string;
+    owner_info_role: string;
+    owner_info_social_security: string;
+}
+
+
+
 const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setStepValidity, currentStep }: StepFormProps) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [patentData, setPatentData] = useState<any>(null);
@@ -31,7 +50,7 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
         token: token
     };
 
-    const formik = useFormik({
+    const formik = useFormik<FormValuesStep4>({
         validateOnMount: true,
         initialValues: { ...initialFormData, ...patentData, token },
         enableReinitialize: true,
@@ -210,6 +229,9 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.agent_info_social_security && Boolean(formik.errors.agent_info_social_security)}
                                 helperText={formik.touched.agent_info_social_security && formik.errors.agent_info_social_security}
+                                inputProps={{
+                                    maxLength: 9
+                                }}
                             />
                         </FormControl>
                     </Grid>
@@ -331,6 +353,9 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.owner_info_social_security && Boolean(formik.errors.owner_info_social_security)}
                                 helperText={formik.touched.owner_info_social_security && formik.errors.owner_info_social_security}
+                                inputProps={{
+                                    maxLength: 9
+                                }}
                             />
                         </FormControl>
                     </Grid>

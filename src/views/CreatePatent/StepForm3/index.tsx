@@ -28,7 +28,21 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
         address_state: '',
         address_city: '',
         address_zipcode: '',
-        token: token
+        taxpayerhome_address_line1: '',
+        taxpayerhome_address_line2: '',
+        taxpayerhome_address_number: '',
+        taxpayerhome_address_country: '',
+        taxpayerhome_address_state: '',
+        taxpayerhome_address_city: '',
+        taxpayerhome_address_zipcode: '',
+        taxpayerwork_address_line1: '',
+        taxpayerwork_address_line2: '',
+        taxpayerwork_address_number: '',
+        taxpayerwork_address_country: '',
+        taxpayerwork_address_state: '',
+        taxpayerwork_address_city: '',
+        taxpayerwork_address_zipcode: '',
+        token: token,
     };
 
     const formik = useFormik({

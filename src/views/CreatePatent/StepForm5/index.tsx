@@ -1,14 +1,50 @@
 import { useState, useEffect } from 'react';
-import { Box, Grid, Typography, FormControl, TextField, Button, InputLabel, MenuItem } from '@mui/material';
+import { Box, Grid, Typography, FormControl, TextField, Button, InputLabel, MenuItem, styled } from '@mui/material';
 import { useFormik } from 'formik';
 import { makeStepAvailable, StepFormProps } from '@/views/CreatePatent/functions';
 import { registerPatentPage5, getPatentData } from '@/views/CreatePatent/functions';
 import { Step5Validation } from './Step5Validation';
 import { CustomLabel } from '@/components';
 import SimpleLoader from '@/components/SimpleLoader';
-import useFormikValidation from '@/hooks/useFormikValidation';
+import useFormikValidation from '@/hooks/useFormikValidation'
+
+
+// Estilo del TextareaAutosize
+const TextareaAutosize = styled('textarea')(({ theme }) => `
+    box-sizing: border-box;
+    width: 100%; // Asegura que ocupe el ancho completo del contenedor
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: 8px 12px;
+    border-radius: 8px;
+    color: ${theme.palette.mode === 'dark' ? '#E0E0E0' : '#333'};
+    background: ${theme.palette.mode === 'dark' ? '#333' : '#fff'};
+    border: 1px solid ${theme.palette.mode === 'dark' ? '#555' : '#ccc'};
+    box-shadow: 0px 2px 2px ${theme.palette.mode === 'dark' ? '#000' : '#f4f4f4'};
+
+        &:hover {
+        border-color: ${theme.palette.primary.main};
+        }
+
+        &:focus {
+        border-color: ${theme.palette.primary.main};
+        box-shadow: 0 0 0 3px ${theme.palette.primary.light};
+        }
+
+        // Elimina el borde extra en Firefox
+        &:focus-visible {
+        outline: 0;
+        }
+
+        // Desactiva el resize manual
+        resize: none;
+        `);
+
 
 const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setStepValidity, currentStep }: StepFormProps) => {
+
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [patentData, setPatentData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
@@ -317,18 +353,34 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
                         <CustomLabel name="Descripción del Permiso de Uso (80 Caracteres)" required />
                         <FormControl fullWidth margin="normal" required>
-                            <TextField
-                                placeholder="Descripción del Permiso de Uso"
+                            <TextareaAutosize
                                 name="business_info_permit_use_number_description"
-                                variant="outlined"
                                 value={formik.values.business_info_permit_use_number_description}
-                                onChange={formik.handleChange}
+                                onChange={(event) => {
+                                    const value = event.target.value.slice(0, 80); // Limitar caracteres
+                                    formik.setFieldValue('business_info_permit_use_number_description', value); // Actualizar Formik
+                                }}
                                 onBlur={formik.handleBlur}
-                                error={formik.touched.business_info_permit_use_number_description && Boolean(formik.errors.business_info_permit_use_number_description)}
-                                helperText={formik.touched.business_info_permit_use_number_description && formik.errors.business_info_permit_use_number_description}
+                                placeholder="Describe el permiso de uso aquí..."
+                                rows={3}
+                                style={{
+                                    width: '100%',
+                                    padding: '8px 12px',
+                                    borderRadius: '8px',
+                                    border: '1px solid #ccc',
+                                    fontSize: '0.875rem',
+                                    resize: 'none',
+                                }}
                             />
+                            {formik.touched.business_info_permit_use_number_description &&
+                                typeof formik.errors.business_info_permit_use_number_description === 'string' && (
+                                    <Typography color="error" variant="body2">
+                                        {formik.errors.business_info_permit_use_number_description}
+                                    </Typography>
+                                )}
                         </FormControl>
                     </Grid>
+
                 </Grid>
             </Box>
 

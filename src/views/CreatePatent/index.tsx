@@ -136,6 +136,7 @@ export default function CreatePatent() {
 
     const StepComponent = steps[activeStep]?.Component;
 
+
     return (
         <Box sx={{ width: '100%', paddingX: '2rem !important' }}>
             {/* Stepper Labels */}
