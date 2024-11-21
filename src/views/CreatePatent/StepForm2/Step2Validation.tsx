@@ -1,67 +1,59 @@
 import * as Yup from 'yup';
 
 export const Step2Validation = Yup.object().shape({
+    // Dirección Postal
+    postal_address_line1: Yup.string()
+        .required("Dirección 1 requerida")
+        .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s,.#-]+$/, "Formato inválido (solo letras, números, espacios y caracteres válidos como ,. # -)")
+        .max(100, "Máximo 100 caracteres"),
+    postal_address_line2: Yup.string()
+        .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s,.#-]*$/, "Formato inválido (solo letras, números, espacios y caracteres válidos como ,. # -)")
+        .max(100, "Máximo 100 caracteres")
+        .notRequired(),
+    postal_address_number: Yup.string()
+        .required("Número de Propiedad requerido")
+        .matches(/^[0-9]+$/, "Solo debe contener números"),
+    postal_address_country: Yup.string()
+        .required("País requerido")
+        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
+        .max(50, "Máximo 50 caracteres"),
+    postal_address_state: Yup.string()
+        .required("Estado requerido")
+        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
+        .max(50, "Máximo 50 caracteres"),
+    postal_address_city: Yup.string()
+        .required("Ciudad requerida")
+        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
+        .max(50, "Máximo 50 caracteres"),
+    postal_address_zipcode: Yup.string()
+        .required("Código Postal requerido")
+        .matches(/^[0-9]{5}$/, "Debe ser un código postal válido de 5 dígitos"),
 
-    // firstName: Yup.string()
-    //     .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/u, "Nombre invalido")
-    //     .required("Primer Nombre requerido")
-    //     .max(20, "máximo 20 caracteres"),
-
-    // middleName: Yup.string()
-    //     .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/u, "Segundo Nombre invalido")
-    //     .max(20, "máximo 20 caracteres"),
-
-    // lastName: Yup.string()
-    //     .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/u, "Apellido invalido")
-    //     .required("Apellido requerido")
-    //     .max(20, "máximo 20 caracteres"),
-
-    // secondLastName: Yup.string()
-    //     .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/u, "Segundo Apellido invalido")
-    //     .max(20, "máximo 20 caracteres"
-    //     ),
-
-    // email: Yup.string()
-    //     .email("Dirección de correo electrónico no válida")
-    //     .required("Correo electrónico es requerido")
-    //     .max(100, "máximo 100 caracteres"),
-
-    // phone: Yup.string()
-    //     .required("Teléfono requerido")
-    //     .matches(/^[0-9*]+$/, "El formato del teléfono debe ser (XXX) XXX-XXXX")
-    //     .max(14, "El teléfono no debe exceder 10 caracteres"),
-
-    // social_security: Yup.string()
-    //     .required("Seguro Social requerido")
-    //     .matches(/^[0-9*]+$/, "Solo debe contener números")
-    //     .test('len', 'Deben ser 9 caracteres', val => val.length === 9),
-
-    // security_answer1: Yup.string()
-    //     .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Respuesta con formato inválido")
-    //     .required("Respuesta requerida")
-    //     .max(30, "Máximo 30 caracteres"),
-
-    // security_answer2: Yup.string()
-    //     .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Respuesta con formato inválido")
-    //     .required("Respuesta requerida")
-    //     .max(30, "Máximo 30 caracteres"),
-
-    // security_answer3: Yup.string()
-    //     .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Respuesta con formato inválido")
-    //     .required("Respuesta requerida")
-    //     .max(30, "Máximo 30 caracteres"),
-
-    // password: Yup.string()
-    //     .required("Contraseña no puede estar vacío")
-    //     .matches(
-    //         /^(?=.*[a-zA-Z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()\;])[a-zA-Z\d!@#$%^&*();]{8,}$/,
-    //         "La contraseña debe tener al menos 8 caracteres, un número, una letra mayúscula y un símbolo"
-    //     )
-    //     .max(20, "máximo 20 caracteres"),
-    // repeatPassword: Yup.string()
-    //     .required("Confirmar Contraseña no puede estar vacío")
-    //     .oneOf([Yup.ref('password')], 'Las contraseñas deben coincidir')
-    //     .max(20, "máximo 20 caracteres"),
-
-
+    // Dirección Física
+    address_line1: Yup.string()
+        .required("Dirección 1 requerida")
+        .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s,.#-]+$/, "Formato inválido (solo letras, números, espacios y caracteres válidos como ,. # -)")
+        .max(100, "Máximo 100 caracteres"),
+    address_line2: Yup.string()
+        .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s,.#-]*$/, "Formato inválido (solo letras, números, espacios y caracteres válidos como ,. # -)")
+        .max(100, "Máximo 100 caracteres")
+        .notRequired(),
+    address_number: Yup.string()
+        .required("Número de Propiedad requerido")
+        .matches(/^[0-9]+$/, "Solo debe contener números"),
+    address_country: Yup.string()
+        .required("País requerido")
+        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
+        .max(50, "Máximo 50 caracteres"),
+    address_state: Yup.string()
+        .required("Estado requerido")
+        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
+        .max(50, "Máximo 50 caracteres"),
+    address_city: Yup.string()
+        .required("Ciudad requerida")
+        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
+        .max(50, "Máximo 50 caracteres"),
+    address_zipcode: Yup.string()
+        .required("Código Postal requerido")
+        .matches(/^[0-9]{5}$/, "Debe ser un código postal válido de 5 dígitos"),
 });

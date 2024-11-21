@@ -11,7 +11,6 @@ export const Step1Validation = Yup.object().shape({
         .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras, números y espacios)")
         .max(100, "Máximo 100 caracteres"),
 
-
     general_fiscal_year_business_startup: Yup.string()
         .required("Año Fiscal requerido")
         .notOneOf(["0"], "Debe seleccionar un año fiscal válido"),
@@ -26,8 +25,6 @@ export const Step1Validation = Yup.object().shape({
                 return value.replace(/\D/g, "").length === 10; // Valida que el número limpio tenga 10 dígitos
             }
         ),
-
-
 
     general_social_security: Yup.string()
         .required("Seguro Social requerido")

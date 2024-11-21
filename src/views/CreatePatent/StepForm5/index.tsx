@@ -151,6 +151,7 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         <CustomLabel name="Fecha de comienzo de operaciones" required />
                         <FormControl fullWidth margin="normal" required>
                             <TextField
+                                type='date'
                                 placeholder="Fecha de comienzo de operaciones"
                                 name="business_info_startup_date"
                                 variant="outlined"
@@ -159,6 +160,9 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.business_info_startup_date && Boolean(formik.errors.business_info_startup_date)}
                                 helperText={formik.touched.business_info_startup_date && formik.errors.business_info_startup_date}
+                                inputProps={{
+                                    max: new Date().toISOString().split("T")[0],  // Limita la fecha a hoy
+                                }}
                             />
                         </FormControl>
                     </Grid>
@@ -226,6 +230,7 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         <CustomLabel name="Fecha de vencimiento del Registro de Comerciante" required />
                         <FormControl fullWidth margin="normal" required>
                             <TextField
+                                type='date'
                                 placeholder="Fecha de vencimiento"
                                 name="business_info_register_number_expiration_date"
                                 variant="outlined"
@@ -234,6 +239,9 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.business_info_register_number_expiration_date && Boolean(formik.errors.business_info_register_number_expiration_date)}
                                 helperText={formik.touched.business_info_register_number_expiration_date && formik.errors.business_info_register_number_expiration_date}
+                                inputProps={{
+                                    max: new Date().toISOString().split("T")[0],  // Limita la fecha a hoy
+                                }}
                             />
                         </FormControl>
                     </Grid>
@@ -341,6 +349,7 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         <CustomLabel name="Fecha de vencimiento del Permiso de Uso" required />
                         <FormControl fullWidth margin="normal" required>
                             <TextField
+                                type='date'
                                 placeholder="Fecha de vencimiento"
                                 name="business_info_permit_use_number_expiration_date"
                                 variant="outlined"
@@ -349,6 +358,9 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.business_info_permit_use_number_expiration_date && Boolean(formik.errors.business_info_permit_use_number_expiration_date)}
                                 helperText={formik.touched.business_info_permit_use_number_expiration_date && formik.errors.business_info_permit_use_number_expiration_date}
+                                inputProps={{
+                                    max: new Date().toISOString().split("T")[0],  // Limita la fecha a hoy
+                                }}
                             />
                         </FormControl>
                     </Grid>
