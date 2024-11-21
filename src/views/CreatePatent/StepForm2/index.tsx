@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Box, Grid, Typography, FormControl, TextField, Button } from '@mui/material';
 import { useFormik } from 'formik';
-import { makeStepAvailable, StepFormProps } from '@/views/CreatePatent/functions';
+import { StepFormProps } from '@/views/CreatePatent/functions';
 import { registerPatentPage2, getPatentData } from '@/views/CreatePatent/functions';
 import { Step2Validation } from './Step2Validation';
 import { CustomLabel } from '@/components';
 import SimpleLoader from '@/components/SimpleLoader';
 import useFormikValidation from '@/hooks/useFormikValidation';
 
-const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile, setStepValidity, currentStep }: StepFormProps) => {
+const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: StepFormProps) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [patentData, setPatentData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
@@ -34,25 +34,27 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
     const formik = useFormik({
         validateOnMount: true,
         initialValues: { ...initialFormData, ...patentData, token },
-        enableReinitialize: true,
+        enableReinitialize: true, // Reinitialize if `patentData` changes after loading
         validationSchema: Step2Validation,
         onSubmit: async (values) => {
             try {
                 setLoading(true)
                 const response = await registerPatentPage2(values);
                 if (response.code === 200) {
+                    // Si la solicitud fue exitosa, limpiamos el mensaje de error (si había) y pasamos al siguiente paso
                     setErrorMessage(null);
                     setTimeout(() => {
                         setLoading(false)
                     }, 400)
                     handleNext();
-                    makeStepAvailable(currentStep, setStepValidity);
                 } else {
                     setLoading(false)
+                    // Si hay algún código diferente, establecemos un mensaje de error
                     setErrorMessage('Hubo un problema al procesar la solicitud. Intente nuevamente.');
                 }
             } catch (error) {
                 setLoading(false)
+                // En caso de error en la solicitud, mostramos un mensaje de error
                 setErrorMessage('Error en el servidor. Intente nuevamente más tarde.');
             }
         },

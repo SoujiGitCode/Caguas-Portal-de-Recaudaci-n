@@ -104,7 +104,9 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
             } else {
                 console.log('Hubo un problema al cargar los datos. Intente nuevamente.');
             }
-            setLoading(false);
+            setTimeout(() => {
+                setLoading(false)
+            }, 400)
         } catch (error) {
             setLoading(false);
             console.log('Error en el servidor al cargar los datos. Intente nuevamente más tarde.');
@@ -137,7 +139,7 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                 <Typography
                     variant="h2"
                     sx={{
-                        marginY: '1rem !important',
+                        marginY: '1.5rem !important',
                         fontSize: isMobile ? '1rem' : '1.2rem',
                         textAlign: isMobile ? 'center' : 'left',
                     }}

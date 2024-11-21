@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import { Box, Stepper, Step, StepLabel, Paper, Typography, Button, useTheme, useMediaQuery, StepConnector, styled, stepConnectorClasses } from '@mui/material';
 import StepForm1 from './StepForm1';
 import StepForm2 from './StepForm2';
@@ -15,44 +15,53 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import BusinessIcon from '@mui/icons-material/Business';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import DoneIcon from '@mui/icons-material/Done';
+import React from 'react';
 
 const steps = [
-    { label: 'Datos Generales', Component: StepForm1, icon: <AccountBoxIcon /> },
-    { label: 'Dirección Postal y Física', Component: StepForm2, icon: <HomeIcon /> },
-    { label: 'Dirección Contribuyente', Component: StepForm3, icon: <AssignmentIndIcon /> },
-    { label: 'Información Dueños y Representante', Component: StepForm4, icon: <BusinessIcon /> },
-    { label: 'Información Negocio', Component: StepForm5, icon: <BusinessIcon /> },
-    { label: 'Documentos', Component: StepForm6, icon: <AttachFileIcon /> },
-    { label: 'Review and Submit', Component: StepForm7, icon: <DoneIcon /> },
+    { label: 'Datos Generales', Component: memo(StepForm1), icon: <AccountBoxIcon /> },
+    { label: 'Dirección Postal y Física', Component: memo(StepForm2), icon: <HomeIcon /> },
+    { label: 'Dirección Contribuyente', Component: memo(StepForm3), icon: <AssignmentIndIcon /> },
+    { label: 'Información Dueños y Representante', Component: memo(StepForm4), icon: <BusinessIcon /> },
+    { label: 'Información Negocio', Component: memo(StepForm5), icon: <BusinessIcon /> },
+    { label: 'Documentos', Component: memo(StepForm6), icon: <AttachFileIcon /> },
+    { label: 'Enviar', Component: memo(StepForm7), icon: <DoneIcon /> },
 ];
 
 // Custom Connector for styling
 const CustomConnector = styled(StepConnector)(({ theme }) => ({
     [`& .MuiStepConnector-line`]: {
-        borderColor: theme.palette.mode === 'dark' ? '#eaeaf0' : '#eaeaf0',
-        borderWidth: 3,
-        // Mostrar líneas solo en desktop
-        [theme.breakpoints.down('lg')]: {
-            display: 'none', // Ocultar conectores en mobile
+        position: 'relative',
+        height: 3, // Altura de la línea
+        backgroundColor: theme.palette.mode === 'dark' ? '#eaeaf0' : '#eaeaf0',
+        borderRadius: 3, // Redondea los bordes de la línea
+        marginTop: -1.5, // Centra la línea verticalmente respecto a los círculos
+        overflow: 'hidden',
+        '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: 0, // Comienza vacío
+            height: '100%',
+            backgroundColor: theme.palette.primary.main,
+            transition: 'width 0.5s ease', // Efecto de llenado progresivo
         },
+    },
+    [`&.${stepConnectorClasses.active} .MuiStepConnector-line::after`]: {
+        width: '100%', // Llena completamente la línea
+    },
+    [`&.${stepConnectorClasses.completed} .MuiStepConnector-line::after`]: {
+        width: '100%', // Llena completamente la línea
+        backgroundColor: theme.palette.success.main, // Diferente color para completado
     },
     [`&.${stepConnectorClasses.alternativeLabel}`]: {
-        top: 22, // Centrar el conector en desktop
-        [theme.breakpoints.down('lg')]: {
-            top: 10, // Ajustar ligeramente en mobile si fuera necesario
-        },
+        top: 22, // Ajuste general para centrado en desktop
     },
-    [`&.${stepConnectorClasses.active}`]: {
-        [`& .MuiStepConnector-line`]: {
-            borderColor: theme.palette.primary.main, // Color para pasos activos
-        },
-    },
-    [`&.${stepConnectorClasses.completed}`]: {
-        [`& .MuiStepConnector-line`]: {
-            borderColor: theme.palette.primary.main, // Color para pasos completados
-        },
+    [`&.${stepConnectorClasses.alternativeLabel} .MuiStepConnector-line`]: {
+        marginTop: 0, // Corrige el centrado para diseño alternativo
     },
 }));
+
 
 
 // Custom Step Icon
@@ -192,7 +201,12 @@ export default function CreatePatent() {
 
             {/* Step Content */}
             {activeStep < steps.length && StepComponent && (
-                <Box sx={{ mt: 4 }}>
+                <Box
+                    sx={{
+                        mt: 4,
+                        minHeight: '110dvh'
+                    }}
+                >
                     <StepComponent
                         token={token}
                         handleNext={handleNext}
@@ -204,6 +218,7 @@ export default function CreatePatent() {
                     />
                 </Box>
             )}
+
 
             {/* Final Message */}
             {activeStep === steps.length && (

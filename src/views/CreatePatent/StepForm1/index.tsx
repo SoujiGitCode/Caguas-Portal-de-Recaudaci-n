@@ -115,9 +115,9 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                 <Typography
                     variant="h2"
                     sx={{
-                        marginY: '1rem !important',
+                        marginY: '1.5rem !important',
                         fontSize: isMobile ? '1rem' : '1.2rem',
-                        textAlign: isMobile ? 'center' : 'left',
+                        textAlign: isMobile ? 'center' : 'start',
                     }}
                 >
                     Registro de nuevo negocio Tipo de Persona Jurídica y Patente
@@ -160,7 +160,7 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
             <Box>
                 <Typography variant="h2"
                     sx={{
-                        marginY: '1rem !important',
+                        marginY: '1.5rem !important',
                         fontSize: isMobile ? '1rem' : '1.2rem',
                         textAlign: isMobile ? 'center' : 'left',
                     }}>

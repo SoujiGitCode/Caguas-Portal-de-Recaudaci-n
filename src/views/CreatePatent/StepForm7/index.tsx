@@ -63,8 +63,8 @@ const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
         <Box
             sx={{
                 padding: "2rem",
-                maxWidth: "800px",
-                margin: "2rem auto",
+                maxWidth: "100%",
+                margin: "4rem auto",
                 textAlign: "center",
             }}
         >
