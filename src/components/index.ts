@@ -7,3 +7,4 @@ export { default as AccessibilityWidget } from "./AccessibilityWidget";
 export { default as SocialSecurityInput } from "./SocialSecurityInput";
 export { default as SocialSecurityNumberInput } from "./SocialSecurityNumberInput";
 export { default as TermsandConditionsCheckBox } from "./TermsAndConditionsCheckBox";
+export { default as YearSelect } from "./YearSelect";

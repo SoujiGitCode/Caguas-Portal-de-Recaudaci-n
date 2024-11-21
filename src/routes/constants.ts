@@ -4,6 +4,7 @@ export const PATH = {
   DASHBOARD: "/dashboard",
   FAST: "/fast",
   CREATE: "/create",
+  PATENT: "/patent",
   CREATE_WORKSHOP: "/create/workshop",
   REGISTER: "/register",
   NOT_FOUND: "/not-found",

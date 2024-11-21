@@ -15,7 +15,7 @@ import paper from "../../assets/images/icon-paper.png";
 import student from "../../assets/images/icon-student.png";
 import SearchIcon from '@mui/icons-material/Search';
 import { WidthNormal } from "@mui/icons-material";
-import { getUserDocuments } from "./functions";
+import { requestUserInfo } from "./functions";
 import { IQuerellaData } from "./types";
 import CustomTable from "./components/customTable";
 import { table } from "console";
@@ -25,10 +25,12 @@ import Paper from "@mui/material/Paper";
 
 const Home = () => {
   const { setAlert } = useAlert();
+  const isAuthenticated = useAuthStore((state: any) => state.isAuthenticated);
   const logout = useAuthStore((state: any) => state.setLogout);
   const token = useAuthStore((state: any) => state.token);
   const navigate = useNavigate();
   const [tableData, setTableData] = useState<IQuerellaData[]>([]);
+  const [userData, setUserData] = useState('')
 
 
 
@@ -76,21 +78,43 @@ const Home = () => {
   });
 
 
+  // useEffect(() => {
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const userDocuments = await getUserDocuments(token);
+  //       if (Array.isArray(userDocuments)) setTableData(userDocuments);
+  //       console.log('tableData');
+  //       console.log(userDocuments);
+  //     } catch (error) {
+  //       console.error("Error fetching user documents:", error);
+  //     }
+  //   }
+  //   fetchUserData();
+  // }, []);
+
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        const userDocuments = await getUserDocuments(token);
-        if (Array.isArray(userDocuments)) setTableData(userDocuments);
-        console.log('tableData');
-        console.log(userDocuments);
-      } catch (error) {
-        console.error("Error fetching user documents:", error);
+      if (isAuthenticated) {
+        try {
+          const userInfo = await requestUserInfo(token);
+          setUserData(userInfo.data);
+
+          const bpType = userInfo.data.bp_type; // Asume que bp_type está en los datos
+          if (bpType === "0") {
+            navigate(PATH.PATENT); // Redirige a la ruta correspondiente
+          } else if (bpType === "1") {
+            setAlert("El tipo de BP es 1", "info"); // Mensaje en verde
+          } else if (bpType === "2") {
+            setAlert("No soportado dirijase a una agencia", "error"); // Mensaje en rojo
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
       }
-    }
+    };
+
     fetchUserData();
-  }, []);
-
-
+  }, [isAuthenticated, token, navigate, setAlert]);
   return (
 
     <>
@@ -129,6 +153,7 @@ const Home = () => {
                 <Typography variant="h1" gutterBottom sx={{ color: '#3A3A3C', fontSize: '2.2em !important' }}>
                   ¡Bienvenido!
                 </Typography>
+
                 <Typography variant="body1" gutterBottom sx={{ color: '#3A3A3C', fontSize: '1.2em !important' }}>
                   Sistema Caguas Gestión de Inteligencia
                 </Typography>
@@ -194,7 +219,7 @@ const Home = () => {
                       <Grid item xs={12} sx={{ padding: '3em', justifyContent: 'center', textAlign: 'center' }}>
                         <Button
                           variant="contained"
-                          color="secondary"
+                          color="primary"
                           style={{
                             width: isMobile ? "100%" : '50%',
                             height: "45px",
@@ -204,7 +229,7 @@ const Home = () => {
                             marginRight: "16px",
                             letterSpacing: '0.1rem'
                           }}
-                        // href={PATH.CREATE}
+                          href={PATH.PATENT}
                         >
                           Crear
                         </Button>
@@ -249,20 +274,11 @@ const Home = () => {
                   </Typography>
                 </Box>
               }
-
             </Grid>
-
           </Grid>
-
         </Grid>
-
-
-
       </Grid >
-
-
     </>
-
   );
 };
 

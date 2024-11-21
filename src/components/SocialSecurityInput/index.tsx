@@ -109,7 +109,7 @@ const SocialSecurityInput = ({ formik, name = 'social_security', setSocialSecuri
         value={displaySSN}
         onChange={handleChange2}
         onKeyDown={handleKeyDown}
-        placeholder="XXX-XX-XXXX"
+        placeholder="xxx- xx - xxx"
         onBlur={formik.handleBlur}
         error={formik.touched.social_security && Boolean(formik.errors.social_security)}
         helperText={formik.touched.social_security && typeof formik.errors.social_security === 'string' ? formik.errors.social_security : undefined}

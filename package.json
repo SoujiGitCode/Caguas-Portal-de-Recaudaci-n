@@ -1,5 +1,5 @@
 {
-  "name": "depr-app",
+  "name": "caguas-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -17,7 +17,7 @@
     "@fontsource/roboto": "^5.0.3",
     "@mui/icons-material": "^5.11.16",
     "@mui/lab": "^5.0.0-alpha.134",
-    "@mui/material": "^5.13.6",
+    "@mui/material": "^6.1.7",
     "@mui/styled-engine-sc": "^5.12.0",
     "@mui/styles": "^5.13.2",
     "@mui/x-date-pickers": "^6.9.1",

@@ -38,8 +38,8 @@ const Sidebar = () => {
       />
       <Options
         children={<AppsIcon sx={{ color: "white", fontSize: "1.5rem" }} />}
-        text="Formulario"
-      // redirect={PATH.CREATE}
+        text="Patentes"
+        redirect={PATH.PATENT}
       // redirect={PATH.REQUEST_SERVICES}
       />
       <Options

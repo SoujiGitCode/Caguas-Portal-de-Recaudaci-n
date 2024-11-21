@@ -35,7 +35,7 @@ const theme = createTheme({
     background: {
       // default: '#f2f2f2',
       default: '#ffffff',
-      paper: '#ffffff',
+      paper: '#f2f2f2',
     },
   },
   typography: {
@@ -49,12 +49,12 @@ const theme = createTheme({
     // Definir variantes de Typography
     h1: {
       fontFamily: 'Lato',
-      fontWeight: 'normal',
+      fontWeight: 'bolder',
       fontSize: '2rem',
     },
     h2: {
       fontFamily: 'Lato',
-      fontWeight: 'bolder',
+      fontWeight: 'bold',
       fontSize: '1.5rem',
     },
     h3: {
@@ -131,7 +131,7 @@ const theme = createTheme({
           width: "100%",
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
-              height: '56px',
+              height: '50px',
               borderColor: borderColor,
               borderRadius: '32px', // Borde redondeado completo
               border: `1px solid ${borderColor}`,
@@ -144,6 +144,7 @@ const theme = createTheme({
               borderColor: borderHover,
             },
             '& input:-webkit-autofill': {
+              borderRadius: '32px',
               WebkitBoxShadow: '0 0 0 100px #ffffff inset', // Evita el fondo azul de autofill
               // WebkitTextFillColor: '#000', // Color de texto
             },

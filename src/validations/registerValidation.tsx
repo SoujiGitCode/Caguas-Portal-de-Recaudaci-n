@@ -1,10 +1,6 @@
 import * as Yup from 'yup';
 
 export const registerValidation = Yup.object().shape({
-    identification: Yup.string()
-        .required("Número de identificación requerido")
-        .matches(/^[0-9]+$/, "solo debe contener números")
-        .max(20, "máximo 20 caracteres"),
 
     firstName: Yup.string()
         .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/u, "Nombre invalido")
@@ -66,6 +62,16 @@ export const registerValidation = Yup.object().shape({
         .required("Confirmar Contraseña no puede estar vacío")
         .oneOf([Yup.ref('password')], 'Las contraseñas deben coincidir')
         .max(20, "máximo 20 caracteres"),
+
+    num_reg_merchant: Yup.string()
+        .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Registro Comercial inválido")
+        .required("N° Registro Comercial Requerido")
+        .max(20, "Máximo 20 caracteres"),
+
+    num_reg_municipal: Yup.string()
+        .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Registro Municipal inválido")
+        .required("N° Registro Municipal Requerido")
+        .max(20, "Máximo 20 caracteres"),
 
 
 });

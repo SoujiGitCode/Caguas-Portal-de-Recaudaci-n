@@ -11,7 +11,7 @@ const UserRegistrationForm = ({ formik, questionsList, showPassword, setShowPass
     return (
         <form style={{ width: isMobile ? '100%' : '60%' }} onSubmit={formik.handleSubmit}>
             <Typography variant="h1"
-                gutterBottom sx={{ color: '#3A3A3C', fontSize: '2rem !important', fontWeight: 'bolder', marginBottom: "1em !important", textAlign: 'center' }}>
+                gutterBottom sx={{ color: '#3A3A3C', fontSize: '1.8rem !important', fontWeight: 'bolder', marginBottom: "1em !important", textAlign: 'center' }}>
 
                 Registro de nueva cuenta información general del usuario
 
@@ -125,6 +125,47 @@ const UserRegistrationForm = ({ formik, questionsList, showPassword, setShowPass
                                 formik={formik}
                                 socialSecurityArray={socialSecurityArray}
                                 setSocialSecurityArray={setSocialSecurityArray}
+                            />
+                        </FormControl>
+                    </Grid>
+
+                </Grid>
+            </Box>
+
+            <Box>
+                <Grid container spacing={0}>
+
+                    <Grid item xs={12} lg={6} sx={{ paddingX: '1rem' }}>
+                        <CustomLabel name="N° Registro Comercial" required={true} />
+                        <FormControl fullWidth margin="normal" required sx={{ marginBottom: "1.5em !important" }}>
+                            <TextField
+                                placeholder='N° Registro Comercial'
+                                name="num_reg_merchant"
+                                id="num_reg_merchant"
+                                type="text"
+                                variant="outlined"
+                                value={formik.values.num_reg_merchant}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik.touched.num_reg_merchant && Boolean(formik.errors.num_reg_merchant)}
+                                helperText={formik.touched.num_reg_merchant && formik.errors.num_reg_merchant}
+                            />
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} lg={6} sx={{ paddingX: '1rem' }}>
+                        <CustomLabel name="N° Registro Municipal" required={false} />
+                        <FormControl fullWidth margin="normal" required sx={{ marginBottom: "1.5em !important" }}>
+                            <TextField
+                                placeholder='N° Registro Municipal'
+                                name="num_reg_municipal"
+                                id="num_reg_municipal"
+                                type="text"
+                                variant="outlined"
+                                value={formik.values.num_reg_municipal}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                                error={formik.touched.num_reg_municipal && Boolean(formik.errors.num_reg_municipal)}
+                                helperText={formik.touched.num_reg_municipal && formik.errors.num_reg_municipal}
                             />
                         </FormControl>
                     </Grid>
@@ -396,7 +437,7 @@ const UserRegistrationForm = ({ formik, questionsList, showPassword, setShowPass
                                 <Button
                                     variant="outlined"
                                     color="primary"
-                                    style={{
+                                    sx={{
                                         // width: '241.5px',
                                         width: "97%",
                                         height: "45px",
@@ -417,7 +458,7 @@ const UserRegistrationForm = ({ formik, questionsList, showPassword, setShowPass
                                     variant="contained"
                                     color="primary"
                                     disabled={!formik.isValid || !checkStatus}
-                                    style={{
+                                    sx={{
                                         width: "97%",
                                         height: "45px",
                                         padding: "8px 15px",

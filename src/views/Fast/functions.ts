@@ -1,7 +1,6 @@
 /* eslint-disable no-useless-catch */
 import api from "@/utils/services/api";
 import { schools, towns, documentCreateFast, userInfo, documentCreate } from "@/utils";
-import useAuthStore from "@/hooks/useAuthStore";
 
 
 

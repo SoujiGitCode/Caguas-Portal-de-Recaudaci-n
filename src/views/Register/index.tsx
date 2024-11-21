@@ -4,14 +4,6 @@ import {
   Grid,
   Box,
   Typography,
-  TextField,
-  Button,
-  FormHelperText,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  IconButton,
-  InputAdornment,
   CircularProgress,
   List,
   ListItem,
@@ -19,7 +11,6 @@ import {
   ListItemText,
   useTheme,
   useMediaQuery,
-  Select
 } from '@mui/material';
 import registerImage from '../../assets/register.png';
 import Radio from '@mui/material/Radio';
@@ -33,10 +24,8 @@ import * as Yup from "yup";
 import styles from "./Register.module.scss";
 import useAlert from "@/hooks/useAlert";
 import useAuthStore from "@/hooks/useAuthStore";
-import { PATH } from '@/routes/constants';
 import { ConfirmationModal, SocialSecurityInput, SocialSecurityNumberInput, TermsandConditionsCheckBox } from '@/components';
 import { registerValidation } from '@/validations/registerValidation';
-import PhoneInput from '@/components/PhoneInput';
 import register from "@/assets/images/caguas-1.jpg"
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import UserRegistrationForm from './userRegistrationForm';
@@ -85,16 +74,14 @@ const Register = () => {
     validateOnMount: true,
 
     initialValues: {
-      docType: idList[0].value,
-      identification: "",
       firstName: "",
       middleName: "",
       lastName: "",
       secondLastName: "",
-      // birthdate: "",
-      // gender: genderList[0].value,
       phone: "",
       social_security: '',
+      num_reg_merchant: '',
+      num_reg_municipal: '',
       email: "",
       password: "",
       repeatPassword: "",
@@ -103,7 +90,7 @@ const Register = () => {
       security_question3: "",
       security_answer1: "",
       security_answer2: "",
-      security_answer3: ""
+      security_answer3: "",
     },
     validationSchema: registerValidation,
     onSubmit: async () => {
@@ -164,7 +151,6 @@ const Register = () => {
       await requestRegister({
         email: formik.values.email,
         password: formik.values.password,
-        identification: formik.values.identification,
         first_name: formik.values.firstName,
         middle_name: formik.values.middleName,
         last_name: formik.values.lastName,
@@ -174,10 +160,13 @@ const Register = () => {
         social_security: socialSecurityArray.join(""),
         security_question1: formik.values.security_question1,
         security_answer1: formik.values.security_answer1,
-        security_answer2: "",
-        security_question2: "",
-        security_question3: "",
-        security_answer3: ""
+        security_answer2: formik.values.security_answer2,
+        security_question2: formik.values.security_question2,
+        security_question3: formik.values.security_question3,
+        security_answer3: formik.values.security_answer3,
+        num_reg_merchant: formik.values.num_reg_merchant,
+        num_reg_municipal: formik.values.num_reg_municipal
+
       });
       setAlert("Registro Completado", "success");
 
@@ -192,22 +181,16 @@ const Register = () => {
     }
   };
 
-  // if (validate) {
-  //   sendUserForRegister();
-  //   setValidate(false);
-  // }
-
-
   useEffect(() => {
-    if (!formik.isValid) {
-      console.log(formik.errors);
-      console.log('!!!formik.isValid');
-      return
-    }
-    console.log(formik.isValid)
-    console.log('Valido');
-  }, [formik.isValid, formik.errors]);
+    console.log('Formik Errors:', formik.errors);
+    console.log('Formik isValid:', formik.isValid);
 
+    if (formik.isValid) {
+      console.log('Formulario válido');
+    } else {
+      console.log('Formulario inválido');
+    }
+  }, [formik.errors, formik.isValid]);
 
   useEffect(() => {
     const fetchQuestions = async () => {

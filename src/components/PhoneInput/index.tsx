@@ -16,13 +16,9 @@ const PhoneInput = ({ name, label, id, variant = 'outlined', placeholder, formik
     const [displayValue, setDisplayValue] = useState("");
     // Inicializa el input con el formato deseado
     useEffect(() => {
-        setDisplayValue(formik.values.phone || "(___) ___-____");
-    }, [formik.values.phone]);
+        setDisplayValue(formik.values[name] || ""); // Usa el campo específico de Formik
+    }, [formik.values[name]]);
 
-    // const handleChange = (event) => {
-    //     console.log(event.target.value); // Ver el valor actual del input
-    //     formik.setFieldValue(name, event.target.value);
-    // };
 
     function cleanPhoneNumber(phoneNumber) {
         // Elimina todo lo que no sea dígitos
@@ -30,13 +26,12 @@ const PhoneInput = ({ name, label, id, variant = 'outlined', placeholder, formik
         return onlyNumbers;
     }
 
-
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const formattedValue = event.target.value; // Mantiene el formato (XXX) XXX-XXXX
-        setDisplayValue(formattedValue)
-        formik.setFieldValue(name, cleanPhoneNumber(formattedValue));
+        const formattedValue = event.target.value; // Formato con paréntesis y guiones
+        setDisplayValue(formattedValue);
+        formik.setFieldValue(name, cleanPhoneNumber(formattedValue)); // Valor limpio para Yup
     };
+
 
 
 
@@ -45,7 +40,7 @@ const PhoneInput = ({ name, label, id, variant = 'outlined', placeholder, formik
             mask="(999) 999-9999"
             value={displayValue}
             onChange={handleChange}
-            onBlur={formik.onBlur} // Correcto manejo de onBlur
+            onBlur={formik.handleBlur} // Correcto manejo de onBlur
             maskChar="_"
         >
             {() => (
@@ -54,9 +49,8 @@ const PhoneInput = ({ name, label, id, variant = 'outlined', placeholder, formik
                     id={id || name}
                     name={name}
                     label={label || ''}
-                    placeholder="(xxx) xxx-xxxx"
+                    placeholder={placeholder || "(XXX) XXX-XXXX"}
                     variant={variant}
-                    // onChange={handleChange}
                     error={formik.touched[name] && Boolean(formik.errors[name])}
                     helperText={formik.touched[name] && formik.errors[name]}
                     InputLabelProps={{ shrink: true }}

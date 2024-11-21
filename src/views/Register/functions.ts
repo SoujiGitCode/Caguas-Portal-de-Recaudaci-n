@@ -5,11 +5,10 @@ import { register, getAllSecurityQuestions, confirmEmail } from "@/utils";
 interface IUserRegisterParams {
   email: string;
   password: string;
-  identification: string;
   first_name: string;
-  middle_name: string;
+  middle_name?: string;
   last_name: string;
-  second_last_name: string;
+  second_last_name?: string;
   phone: string;
   social_security: string;
   security_question1: string;
@@ -18,6 +17,8 @@ interface IUserRegisterParams {
   security_question2: string;
   security_question3: string;
   security_answer3: string;
+  num_reg_merchant: string;
+  num_reg_municipal: string;
 }
 
 export type Ok = {
@@ -28,7 +29,6 @@ export type Ok = {
 export const requestRegister = async ({
   email,
   password,
-  identification,
   first_name,
   middle_name,
   last_name,
@@ -40,7 +40,9 @@ export const requestRegister = async ({
   security_answer2,
   security_question2,
   security_question3,
-  security_answer3
+  security_answer3,
+  num_reg_merchant,
+  num_reg_municipal
 }: IUserRegisterParams) => {
   try {
     api.resource = register;
@@ -48,7 +50,6 @@ export const requestRegister = async ({
     console.log({
       email,
       password,
-      identification,
       first_name,
       middle_name,
       last_name,
@@ -60,14 +61,15 @@ export const requestRegister = async ({
       security_answer2,
       security_question2,
       security_question3,
-      security_answer3
+      security_answer3,
+      num_reg_merchant,
+      num_reg_municipal
     })
 
     const res = await api.post({
       body: {
         email,
         password,
-        identification,
         first_name,
         middle_name,
         last_name,
@@ -79,12 +81,15 @@ export const requestRegister = async ({
         security_answer2,
         security_question2,
         security_question3,
-        security_answer3
+        security_answer3,
+        num_reg_merchant,
+        num_reg_municipal
       },
     })
 
     return res
   } catch (error) {
+    console.log(error)
     throw error;
   }
 
@@ -98,10 +103,9 @@ export const getSecurityQuestionsList = async () => {
     const res = await api.get()
     return res
   } catch (error) {
+    console.log(error)
     throw error;
   }
-
-
 
 };
 
@@ -126,6 +130,7 @@ export const requestConfirmEmail = async ({
 
     return res;
   } catch (error) {
+    console.log(error)
     throw error;
   }
 };

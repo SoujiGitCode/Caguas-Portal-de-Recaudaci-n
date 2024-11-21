@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import { Home, Landing, Login, Register, Profile, Fast, Create, Querella } from "@/views";
+import { Home, Landing, Login, Register, Profile, Fast, CreatePatent, Querella } from "@/views";
 import { UnauthorizedLayout, AuthorizedLayout } from "@/layout";
 import { PATH } from "./constants";
 import useAuthStore from "@/hooks/useAuthStore";
@@ -34,10 +34,6 @@ const Root = () => {
             {/* <Route index element={<Login />} /> */}
           </Route>
 
-          <Route path={PATH.FAST} element={<UnauthorizedLayout />}>
-            <Route index element={<Fast />} />
-          </Route>
-
 
           <Route path={PATH.RECOVERY} element={<UnauthorizedLayout />}>
             <Route index element={<Recovery />} />
@@ -64,10 +60,10 @@ const Root = () => {
           <Route path={PATH.FAST} element={<AuthorizedLayout />}>
             <Route index element={<Fast />} />
           </Route>
-          <Route path={`${PATH.CREATE}`} element={<AuthorizedLayout />}>
-            <Route index element={<Querella />} />
-          </Route>
 
+          <Route path={PATH.PATENT} element={<AuthorizedLayout />}>
+            <Route index element={<CreatePatent />} />
+          </Route>
 
           <Route path={PATH.RECOVERY} element={<UnauthorizedLayout />}>
             <Route index element={<Recovery />} />

@@ -9,3 +9,4 @@ export { default as Fast } from "./Fast";
 export { default as Recovery } from "./Recovery";
 export { default as RecoveryToken } from "./RecoveryToken";
 export { default as Querella } from "./Querella"
+export { default as CreatePatent } from "./CreatePatent"

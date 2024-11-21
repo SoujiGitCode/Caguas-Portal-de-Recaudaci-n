@@ -28,6 +28,10 @@ body,
   padding: 0;
 }
 
+* {
+  margin: 0 !important;
+}
+
 .p {
   font-family: "Montserrat-Medium" !important;
 }
@@ -128,4 +132,22 @@ div {
 
 .css-eke14m.Mui-error {
   margin-top: 1em !important;
+}
+
+/* Ajuste para la línea vertical en los pasos inactivos */
+.MuiStepConnector-lineVertical {
+  margin-left: 12px !important;
+  /* Ajusta este valor según sea necesario para pasos inactivos */
+}
+
+/* Ajuste para el paso activo */
+.MuiStep-root.Mui-active .MuiStepConnector-lineVertical {
+  margin-left: 12px !important;
+  /* Cambia este valor si es necesario */
+}
+
+/* Ajuste para la línea vertical del paso activo */
+.MuiStepConnector-root.Mui-active .MuiStepConnector-lineVertical {
+  margin-left: 12px !important;
+  /* Asegúrate de que el valor coincida con el de los pasos inactivos */
 }
