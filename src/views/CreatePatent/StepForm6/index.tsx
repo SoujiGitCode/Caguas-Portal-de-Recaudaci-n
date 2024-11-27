@@ -22,7 +22,7 @@ const StepForm6 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
     const [error, setError] = useState<string | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
-    const fetchPatentFiles = async (patentId: string) => {
+    const fetchPatentFiles = async (patentId: string | number) => {
         try {
             const patentFilesData = await getPatentFiles(token, patentId);
             if (patentFilesData && patentFilesData.data) {
@@ -73,22 +73,22 @@ const StepForm6 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
     };
 
     const onDeleteFile = async (patentId: string | number, fileId: string | number) => {
-        console.log('do nothing')
-        // setLoadingDelete(fileId.toString());
-        // setError(null);
-        // setSuccessMessage(null);
-        // try {
-        //     console.log('id de la patente: ', patentId)
-        //     console.log('id del archivo: ', fileId)
-        //     await deletePatentFile({ patent_id: patentId, file_id: fileId, token });
-        //     setSuccessMessage('Archivo eliminado exitosamente.');
-        //     await fetchPatentFiles(patentId); // Refrescar archivos
-        // } catch (error) {
-        //     setError('Error al eliminar archivo. Intente nuevamente.');
-        //     console.error('Error deleting file:', error);
-        // } finally {
-        //     setLoadingDelete(null);
-        // }
+        console.log('deleting')
+        setLoadingDelete(fileId.toString());
+        setError(null);
+        setSuccessMessage(null);
+        try {
+            console.log('id de la patente: ', patentId)
+            console.log('id del archivo: ', fileId)
+            await deletePatentFile({ patent_id: patentId, file_id: fileId, token });
+            setSuccessMessage('Archivo eliminado exitosamente.');
+            await fetchPatentFiles(patentId); // Refrescar archivos
+        } catch (error) {
+            setError('Error al eliminar archivo. Intente nuevamente.');
+            console.error('Error deleting file:', error);
+        } finally {
+            setLoadingDelete(null);
+        }
     };
 
     useEffect(() => {
@@ -104,7 +104,7 @@ const StepForm6 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
             <Typography
                 sx={{
                     fontFamily: 'GothamMedium',
-                    fontSize: isMobile ? '1rem' : '1.2rem',
+                    fontSize: '1rem',
                     fontWeight: 'bolder',
                     marginBottom: '1rem',
                 }}
@@ -112,12 +112,16 @@ const StepForm6 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                 Subir Archivos (4 Documentos Fijos)
             </Typography>
 
-            {error && (
-                <Typography sx={{ color: 'red', marginBottom: '1rem' }}>{error}</Typography>
-            )}
-            {successMessage && (
-                <Typography sx={{ color: 'green', marginBottom: '1rem' }}>{successMessage}</Typography>
-            )}
+            {
+                error && (
+                    <Typography sx={{ color: 'red', marginBottom: '1rem' }}>{error}</Typography>
+                )
+            }
+            {
+                successMessage && (
+                    <Typography sx={{ color: 'green', marginBottom: '1rem' }}>{successMessage}</Typography>
+                )
+            }
 
             <Grid container spacing={2}>
                 {documents.map((doc, index) => (
@@ -228,7 +232,7 @@ const StepForm6 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     {isLastStep ? 'Enviar Solicitud' : 'Siguiente'}
                 </Button>
             </Box>
-        </Box>
+        </Box >
     );
 };
 

@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { VALID_COUNTRIES, MAIN_COUNTRY } from "../functions"
 
 export const Step2Validation = Yup.object().shape({
     // Dirección Postal
@@ -15,16 +16,21 @@ export const Step2Validation = Yup.object().shape({
         .matches(/^[0-9]+$/, "Solo debe contener números"),
     postal_address_country: Yup.string()
         .required("País requerido")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .oneOf(VALID_COUNTRIES, 'Debes seleccionar un país válido'),
     postal_address_state: Yup.string()
-        .required("Estado requerido")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .when('postal_address_country', {
+            is: (value: string) => value === MAIN_COUNTRY,
+            then: (schema) =>
+                schema.required('Estado requerido').matches(/^[a-zA-Z\s]+$/, 'Formato inválido (solo letras y espacios)').max(50, 'Máximo 50 caracteres'),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     postal_address_city: Yup.string()
-        .required("Ciudad requerida")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .when('postal_address_country', {
+            is: (value: string) => value === MAIN_COUNTRY,
+            then: (schema) =>
+                schema.required('Ciudad requerida').matches(/^[a-zA-Z\s]+$/, 'Formato inválido (solo letras y espacios)').max(50, 'Máximo 50 caracteres'),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     postal_address_zipcode: Yup.string()
         .required("Código Postal requerido")
         .matches(/^[0-9]{5}$/, "Debe ser un código postal válido de 5 dígitos"),
@@ -43,16 +49,21 @@ export const Step2Validation = Yup.object().shape({
         .matches(/^[0-9]+$/, "Solo debe contener números"),
     address_country: Yup.string()
         .required("País requerido")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .oneOf(VALID_COUNTRIES, 'Debes seleccionar un país válido'),
     address_state: Yup.string()
-        .required("Estado requerido")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .when('address_country', {
+            is: (value: string) => value === MAIN_COUNTRY,
+            then: (schema) =>
+                schema.required('Estado requerido').matches(/^[a-zA-Z\s]+$/, 'Formato inválido (solo letras y espacios)').max(50, 'Máximo 50 caracteres'),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     address_city: Yup.string()
-        .required("Ciudad requerida")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .when('address_country', {
+            is: (value: string) => value === MAIN_COUNTRY,
+            then: (schema) =>
+                schema.required('Ciudad requerida').matches(/^[a-zA-Z\s]+$/, 'Formato inválido (solo letras y espacios)').max(50, 'Máximo 50 caracteres'),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     address_zipcode: Yup.string()
         .required("Código Postal requerido")
         .matches(/^[0-9]{5}$/, "Debe ser un código postal válido de 5 dígitos"),

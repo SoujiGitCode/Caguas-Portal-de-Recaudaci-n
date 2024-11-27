@@ -1,5 +1,8 @@
 import * as Yup from 'yup';
 
+const VALID_COUNTRIES = ['US', 'DO', 'PR'];
+
+
 export const Step3Validation = Yup.object().shape({
     // Dirección Residencial del Contribuyente
     taxpayerhome_address_line1: Yup.string()
@@ -14,17 +17,22 @@ export const Step3Validation = Yup.object().shape({
         .required("Número de Propiedad requerido")
         .matches(/^[0-9]+$/, "Solo debe contener números"),
     taxpayerhome_address_country: Yup.string()
-        .required("País requerido")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .required('País requerido')
+        .oneOf(VALID_COUNTRIES, 'Debes seleccionar un país válido'),
     taxpayerhome_address_state: Yup.string()
-        .required("Estado requerido")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .when('taxpayerhome_address_country', {
+            is: (value: string) => value === 'US',
+            then: (schema) =>
+                schema.required('Estado requerido').matches(/^[a-zA-Z\s]+$/, 'Formato inválido (solo letras y espacios)').max(50, 'Máximo 50 caracteres'),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     taxpayerhome_address_city: Yup.string()
-        .required("Ciudad requerida")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .when('taxpayerhome_address_country', {
+            is: (value: string) => value === 'US',
+            then: (schema) =>
+                schema.required('Ciudad requerida').matches(/^[a-zA-Z\s]+$/, 'Formato inválido (solo letras y espacios)').max(50, 'Máximo 50 caracteres'),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     taxpayerhome_address_zipcode: Yup.string()
         .required("Código Postal requerido")
         .matches(/^[0-9]{5}$/, "Debe ser un código postal válido de 5 dígitos"),
@@ -42,17 +50,26 @@ export const Step3Validation = Yup.object().shape({
         .required("Número de Propiedad requerido")
         .matches(/^[0-9]+$/, "Solo debe contener números"),
     taxpayerwork_address_country: Yup.string()
-        .required("País requerido")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .required('País requerido')
+        .oneOf(VALID_COUNTRIES, 'Debes seleccionar un país válido'),
     taxpayerwork_address_state: Yup.string()
-        .required("Estado requerido")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .when('taxpayerwork_address_country', {
+            is: (value: string) => value === 'US',
+            then: (schema) =>
+                schema
+                    .required('Estado requerido')
+                    .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, 'Formato inválido (solo letras y espacios)'),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     taxpayerwork_address_city: Yup.string()
-        .required("Ciudad requerida")
-        .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
+        .when('taxpayerwork_address_country', {
+            is: (value: string) => value === 'US',
+            then: (schema) =>
+                schema
+                    .required('Ciudad requerida')
+                    .matches(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/, 'Formato inválido (solo letras y espacios)'),
+            otherwise: (schema) => schema.notRequired(),
+        }),
     taxpayerwork_address_zipcode: Yup.string()
         .required("Código Postal requerido")
         .matches(/^[0-9]{5}$/, "Debe ser un código postal válido de 5 dígitos"),

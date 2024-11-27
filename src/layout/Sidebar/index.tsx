@@ -38,7 +38,7 @@ const Sidebar = () => {
       />
       <Options
         children={<AppsIcon sx={{ color: "white", fontSize: "1.5rem" }} />}
-        text="Patentes"
+        text="Registros"
         redirect={PATH.PATENT}
       // redirect={PATH.REQUEST_SERVICES}
       />
@@ -46,7 +46,7 @@ const Sidebar = () => {
         children={<PersonIcon sx={{ color: "white", fontSize: "1.5rem" }} />}
         text="Perfil"
         //redirect={PATH.PROFILE}
-        redirect={PATH.DASHBOARD}
+        redirect={'#'}
       />
 
       <Box onClick={handleLogout}>

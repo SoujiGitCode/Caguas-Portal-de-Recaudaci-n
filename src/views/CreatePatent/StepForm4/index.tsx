@@ -9,20 +9,15 @@ import SimpleLoader from '@/components/SimpleLoader';
 import useFormikValidation from '@/hooks/useFormikValidation';
 
 interface FormValuesStep4 {
-    agent_info_first_name: string;
-    agent_info_second_name?: string;
-    agent_info_last_name: string;
-    agent_info_second_last_name?: string;
+    agent_info_name: string;
     agent_info_email: string;
     agent_info_role: string;
     agent_info_social_security: string;
-    owner_info_first_name: string;
-    owner_info_second_name?: string;
-    owner_info_last_name: string;
-    owner_info_second_last_name?: string;
+    owner_info_name: string;
     owner_info_email: string;
     owner_info_role: string;
     owner_info_social_security: string;
+    token: string;
 }
 
 
@@ -33,17 +28,11 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
     const [loading, setLoading] = useState(false);
 
     const initialFormData = {
-        agent_info_first_name: '',
-        agent_info_second_name: '',
-        agent_info_last_name: '',
-        agent_info_second_last_name: '',
+        agent_info_name: '',
         agent_info_email: '',
         agent_info_role: '',
         agent_info_social_security: '',
-        owner_info_first_name: '',
-        owner_info_second_name: '',
-        owner_info_last_name: '',
-        owner_info_second_last_name: '',
+        owner_info_name: '',
         owner_info_email: '',
         owner_info_role: '',
         owner_info_social_security: '',
@@ -121,7 +110,7 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     variant="h2"
                     sx={{
                         marginY: '1.5rem !important',
-                        fontSize: isMobile ? '1rem' : '1.2rem',
+                        fontSize: '1rem',
                         textAlign: isMobile ? 'center' : 'left',
                     }}
                 >
@@ -133,58 +122,13 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         <FormControl fullWidth margin="normal" required>
                             <TextField
                                 placeholder="Nombre"
-                                name="agent_info_first_name"
+                                name="agent_info_name"
                                 variant="outlined"
-                                value={formik.values.agent_info_first_name}
+                                value={formik.values.agent_info_name}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                error={formik.touched.agent_info_first_name && Boolean(formik.errors.agent_info_first_name)}
-                                helperText={formik.touched.agent_info_first_name && formik.errors.agent_info_first_name}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Segundo Nombre" />
-                        <FormControl fullWidth margin="normal">
-                            <TextField
-                                placeholder="Segundo Nombre"
-                                name="agent_info_second_name"
-                                variant="outlined"
-                                value={formik.values.agent_info_second_name}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.agent_info_second_name && Boolean(formik.errors.agent_info_second_name)}
-                                helperText={formik.touched.agent_info_second_name && formik.errors.agent_info_second_name}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Apellido" required />
-                        <FormControl fullWidth margin="normal" required>
-                            <TextField
-                                placeholder="Apellido"
-                                name="agent_info_last_name"
-                                variant="outlined"
-                                value={formik.values.agent_info_last_name}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.agent_info_last_name && Boolean(formik.errors.agent_info_last_name)}
-                                helperText={formik.touched.agent_info_last_name && formik.errors.agent_info_last_name}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Segundo Apellido" />
-                        <FormControl fullWidth margin="normal">
-                            <TextField
-                                placeholder="Segundo Apellido"
-                                name="agent_info_second_last_name"
-                                variant="outlined"
-                                value={formik.values.agent_info_second_last_name}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.agent_info_second_last_name && Boolean(formik.errors.agent_info_second_last_name)}
-                                helperText={formik.touched.agent_info_second_last_name && formik.errors.agent_info_second_last_name}
+                                error={formik.touched.agent_info_name && Boolean(formik.errors.agent_info_name)}
+                                helperText={formik.touched.agent_info_name && formik.errors.agent_info_name}
                             />
                         </FormControl>
                     </Grid>
@@ -245,7 +189,7 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     variant="h2"
                     sx={{
                         marginY: '1.5rem !important',
-                        fontSize: isMobile ? '1rem' : '1.2rem',
+                        fontSize: '1rem',
                         textAlign: isMobile ? 'center' : 'left',
                     }}
                 >
@@ -257,28 +201,13 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         <FormControl fullWidth margin="normal" required>
                             <TextField
                                 placeholder="Nombre"
-                                name="owner_info_first_name"
+                                name="owner_info_name"
                                 variant="outlined"
-                                value={formik.values.owner_info_first_name}
+                                value={formik.values.owner_info_name}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
-                                error={formik.touched.owner_info_first_name && Boolean(formik.errors.owner_info_first_name)}
-                                helperText={formik.touched.owner_info_first_name && formik.errors.owner_info_first_name}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Segundo Nombre" />
-                        <FormControl fullWidth margin="normal">
-                            <TextField
-                                placeholder="Segundo Nombre"
-                                name="owner_info_second_name"
-                                variant="outlined"
-                                value={formik.values.owner_info_second_name}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.owner_info_second_name && Boolean(formik.errors.owner_info_second_name)}
-                                helperText={formik.touched.owner_info_second_name && formik.errors.owner_info_second_name}
+                                error={formik.touched.owner_info_name && Boolean(formik.errors.owner_info_name)}
+                                helperText={formik.touched.owner_info_name && formik.errors.owner_info_name}
                             />
                         </FormControl>
                     </Grid>
@@ -294,21 +223,6 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.owner_info_last_name && Boolean(formik.errors.owner_info_last_name)}
                                 helperText={formik.touched.owner_info_last_name && formik.errors.owner_info_last_name}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Segundo Apellido" />
-                        <FormControl fullWidth margin="normal">
-                            <TextField
-                                placeholder="Segundo Apellido"
-                                name="owner_info_second_last_name"
-                                variant="outlined"
-                                value={formik.values.owner_info_second_last_name}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.owner_info_second_last_name && Boolean(formik.errors.owner_info_second_last_name)}
-                                helperText={formik.touched.owner_info_second_last_name && formik.errors.owner_info_second_last_name}
                             />
                         </FormControl>
                     </Grid>
@@ -361,7 +275,7 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                 </Grid>
-            </Box>
+            </Box >
 
             <Box sx={{ my: '2rem !important', display: 'flex', justifyContent: 'center' }}>
                 {handleBack && (
@@ -399,7 +313,7 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     {isLastStep ? 'Enviar Solicitud' : 'Siguiente'}
                 </Button>
             </Box>
-        </form>
+        </form >
 
 
     );

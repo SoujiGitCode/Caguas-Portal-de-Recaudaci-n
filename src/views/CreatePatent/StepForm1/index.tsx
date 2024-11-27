@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Box, Grid, Typography, FormControl, TextField, Button } from '@mui/material';
+import { Box, Grid, Typography, FormControl, TextField, Button, MenuItem } from '@mui/material';
 import { useFormik } from 'formik';
 import { Step1Validation } from './Step1Validation';
 import { CustomLabel, SocialSecurityInput, YearSelect } from '@/components';
@@ -20,6 +20,8 @@ interface FormValuesStep1 {
     general_last_name: string;
     general_second_name?: string;
     general_second_last_name?: string;
+    general_tsc: string;
+    token: string;
 }
 
 
@@ -40,6 +42,7 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
         general_last_name: "",
         general_second_name: "",
         general_second_last_name: "",
+        general_tsc: '0',
         token: token
     };
 
@@ -48,6 +51,7 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
         initialValues: { ...initialFormData, ...patentData, token },
         enableReinitialize: true, // Reinitialize si patentData cambia al cargar
         validationSchema: Step1Validation,
+        validateOnBlur: true,   // Valida al salir del campo
         onSubmit: async (values) => {
             try {
                 setLoading(true)
@@ -76,6 +80,7 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
             const response = await getPatentData(token);
             if (response.code === 200) {
                 setPatentData(response.data);
+                console.log(response.data)
             } else {
                 setLoading(false)
                 console.log('Hubo un problema al cargar los datos del patente. Intente nuevamente.');
@@ -90,6 +95,16 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
     };
 
     useFormikValidation(formik);
+    // Efecto para marcar solo el campo de year select como `touched`
+    useEffect(() => {
+        const markYearFieldAsTouched = () => {
+            formik.setTouched({ general_fiscal_year_business_startup: true }, true);
+        };
+
+        markYearFieldAsTouched();
+    }, [formik.values.general_fiscal_year_business_startup]);
+
+
 
     useEffect(() => {
         fetchPatentData();
@@ -116,7 +131,7 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     variant="h2"
                     sx={{
                         marginY: '1.5rem !important',
-                        fontSize: isMobile ? '1rem' : '1.2rem',
+                        fontSize: '1rem',
                         textAlign: isMobile ? 'center' : 'start',
                     }}
                 >
@@ -161,7 +176,7 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                 <Typography variant="h2"
                     sx={{
                         marginY: '1.5rem !important',
-                        fontSize: isMobile ? '1rem' : '1.2rem',
+                        fontSize: '1rem',
                         textAlign: isMobile ? 'center' : 'left',
                     }}>
                     Registro de nuevo negocio Datos generales de la patente
@@ -208,11 +223,6 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                                     maxLength: 9
                                 }}
                             />
-
-                            {/* <SocialSecurityInput
-                                name="general_social_security"
-                                formik={formik}
-                            /> */}
                         </FormControl>
                     </Grid>
 
@@ -262,6 +272,57 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
+                        <CustomLabel name="Tipo de TSC" required />
+                        <FormControl fullWidth margin="normal" required>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    gap: '0.5rem', // Menor espacio entre los botones y el texto
+                                }}
+                            >
+                                <Box sx={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+                                    <Button
+                                        variant={formik.values.general_tsc === '0' ? 'contained' : 'outlined'}
+                                        color={formik.values.general_tsc === '0' ? 'primary' : 'secondary'}
+                                        onClick={() => formik.setFieldValue('general_tsc', '0')}
+                                        sx={{ minWidth: '120px' }}
+                                    >
+                                        Persona
+                                    </Button>
+                                    <Button
+                                        variant={formik.values.general_tsc === '1' ? 'contained' : 'outlined'}
+                                        color={formik.values.general_tsc === '1' ? 'primary' : 'secondary'}
+                                        onClick={() => formik.setFieldValue('general_tsc', '1')}
+                                        sx={{ minWidth: '120px' }}
+                                    >
+                                        Organización
+                                    </Button>
+                                </Box>
+                                {/* Texto debajo indicando la opción seleccionada */}
+                                <Typography
+                                    sx={{
+                                        fontSize: '0.8rem',
+                                        color: 'rgb(34,139,34)',
+                                        fontWeight: 'bold',
+                                    }}
+                                >
+                                    {formik.values.general_tsc === '0'
+                                        ? 'Ha seleccionado: Persona'
+                                        : formik.values.general_tsc === '1'
+                                            ? 'Ha seleccionado: Organización'
+                                            : ''}
+                                </Typography>
+                            </Box>
+                            {formik.touched.general_tsc && formik.errors.general_tsc && (
+                                <Typography color="error" sx={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>
+                                    {formik.errors.general_tsc}
+                                </Typography>
+                            )}
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem', display: 'none' }}>
                         <CustomLabel name="Segundo Nombre" />
                         <FormControl fullWidth margin="normal" sx={{ marginBottom: "1.5em !important" }}>
                             <TextField
@@ -276,7 +337,7 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                             />
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
+                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem', display: 'none' }}>
                         <CustomLabel name="Segundo Apellido" />
                         <FormControl fullWidth margin="normal" sx={{ marginBottom: "1.5em !important" }}>
                             <TextField
@@ -292,7 +353,7 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                 </Grid>
-            </Box>
+            </Box >
 
             <Box sx={{ my: '2rem !important', display: 'flex', justifyContent: 'center' }}>
                 {handleBack && (
@@ -330,7 +391,7 @@ const StepForm1 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     {isLastStep ? 'Enviar Solicitud' : 'Siguiente'}
                 </Button>
             </Box>
-        </form>
+        </form >
 
 
     );

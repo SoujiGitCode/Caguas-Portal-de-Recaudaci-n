@@ -1,12 +1,32 @@
 import { useState, useEffect } from 'react';
 import { Box, Grid, Typography, FormControl, TextField, Button } from '@mui/material';
 import { useFormik } from 'formik';
-import { makeStepAvailable, StepFormProps } from '@/views/CreatePatent/functions';
+import { makeStepAvailable, StepFormProps, mainCountrySelected } from '@/views/CreatePatent/functions';
 import { registerPatentPage3, getPatentData } from '@/views/CreatePatent/functions';
 import { Step3Validation } from './Step3Validation';
 import { CustomLabel } from '@/components';
 import SimpleLoader from '@/components/SimpleLoader';
 import useFormikValidation from '@/hooks/useFormikValidation';
+import CountrySelect from '@/components/CountrySelect';
+
+interface FromValuesStep3 {
+    taxpayerhome_address_line1: string;
+    taxpayerhome_address_line2: string;
+    taxpayerhome_address_number: string;
+    taxpayerhome_address_country: string;
+    taxpayerhome_address_state: string;
+    taxpayerhome_address_city: string;
+    taxpayerhome_address_zipcode: string;
+    taxpayerwork_address_line1: string;
+    taxpayerwork_address_line2: string;
+    taxpayerwork_address_number: string;
+    taxpayerwork_address_country: string;
+    taxpayerwork_address_state: string;
+    taxpayerwork_address_city: string;
+    taxpayerwork_address_zipcode: string;
+    token: string,
+};
+
 
 const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setStepValidity, currentStep }: StepFormProps) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -14,20 +34,6 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
     const [loading, setLoading] = useState(false);
 
     const initialFormData = {
-        postal_address_line1: '',
-        postal_address_line2: '',
-        postal_address_number: '',
-        postal_address_country: '',
-        postal_address_state: '',
-        postal_address_city: '',
-        postal_address_zipcode: '',
-        address_line1: '',
-        address_line2: '',
-        address_number: '',
-        address_country: '',
-        address_state: '',
-        address_city: '',
-        address_zipcode: '',
         taxpayerhome_address_line1: '',
         taxpayerhome_address_line2: '',
         taxpayerhome_address_number: '',
@@ -45,7 +51,7 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
         token: token,
     };
 
-    const formik = useFormik({
+    const formik = useFormik<FromValuesStep3>({
         validateOnMount: true,
         initialValues: { ...initialFormData, ...patentData, token },
         enableReinitialize: true,
@@ -92,6 +98,26 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
 
     useFormikValidation(formik);
 
+    // Country logic: limpiar state y city si cambia el country
+    useEffect(() => {
+        const handleCountryChange = () => {
+            const homeCountry = formik.values.taxpayerhome_address_country;
+            const workCountry = formik.values.taxpayerwork_address_country;
+
+            if (homeCountry !== patentData?.taxpayerhome_address_country) {
+                formik.setFieldValue('taxpayerhome_address_state', '');
+                formik.setFieldValue('taxpayerhome_address_city', '');
+            }
+            if (workCountry !== patentData?.taxpayerwork_address_country) {
+                formik.setFieldValue('taxpayerwork_address_state', '');
+                formik.setFieldValue('taxpayerwork_address_city', '');
+            }
+        };
+
+        handleCountryChange();
+    }, [formik.values.taxpayerhome_address_country, formik.values.taxpayerwork_address_country]);
+
+
     useEffect(() => {
         fetchPatentData();
     }, []);
@@ -117,7 +143,7 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     variant="h2"
                     sx={{
                         marginY: '1.5rem !important',
-                        fontSize: isMobile ? '1rem' : '1.2rem',
+                        fontSize: '1rem',
                         textAlign: isMobile ? 'center' : 'left',
                     }}
                 >
@@ -158,7 +184,7 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         <CustomLabel name="Número de Propiedad" required />
                         <FormControl fullWidth margin="normal" required>
                             <TextField
-                                placeholder="Número de Propiedad"
+                                placeholder="Número de Propiedad!"
                                 name="taxpayerhome_address_number"
                                 variant="outlined"
                                 value={formik.values.taxpayerhome_address_number}
@@ -172,15 +198,9 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
                         <CustomLabel name="País" required />
                         <FormControl fullWidth margin="normal" required>
-                            <TextField
-                                placeholder="País"
+                            <CountrySelect
                                 name="taxpayerhome_address_country"
-                                variant="outlined"
-                                value={formik.values.taxpayerhome_address_country}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.taxpayerhome_address_country && Boolean(formik.errors.taxpayerhome_address_country)}
-                                helperText={formik.touched.taxpayerhome_address_country && formik.errors.taxpayerhome_address_country}
+                                formik={formik}
                             />
                         </FormControl>
                     </Grid>
@@ -188,6 +208,7 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         <CustomLabel name="Estado" required />
                         <FormControl fullWidth margin="normal" required>
                             <TextField
+                                disabled={mainCountrySelected(formik.values.taxpayerhome_address_country)}
                                 placeholder="Estado"
                                 name="taxpayerhome_address_state"
                                 variant="outlined"
@@ -203,6 +224,7 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         <CustomLabel name="Ciudad/Condado" />
                         <FormControl fullWidth margin="normal">
                             <TextField
+                                disabled={mainCountrySelected(formik.values.taxpayerhome_address_country)}
                                 placeholder="Ciudad/Condado"
                                 name="taxpayerhome_address_city"
                                 variant="outlined"
@@ -238,7 +260,7 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     variant="h2"
                     sx={{
                         marginY: '1.5rem !important',
-                        fontSize: isMobile ? '1rem' : '1.2rem',
+                        fontSize: '1rem',
                         textAlign: isMobile ? 'center' : 'left',
                     }}
                 >
@@ -293,15 +315,9 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
                         <CustomLabel name="País" required />
                         <FormControl fullWidth margin="normal" required>
-                            <TextField
-                                placeholder="País"
+                            <CountrySelect
                                 name="taxpayerwork_address_country"
-                                variant="outlined"
-                                value={formik.values.taxpayerwork_address_country}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.taxpayerwork_address_country && Boolean(formik.errors.taxpayerwork_address_country)}
-                                helperText={formik.touched.taxpayerwork_address_country && formik.errors.taxpayerwork_address_country}
+                                formik={formik}
                             />
                         </FormControl>
                     </Grid>
@@ -309,6 +325,7 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         <CustomLabel name="Estado" required />
                         <FormControl fullWidth margin="normal" required>
                             <TextField
+                                disabled={mainCountrySelected(formik.values.taxpayerwork_address_country)}
                                 placeholder="Estado"
                                 name="taxpayerwork_address_state"
                                 variant="outlined"
@@ -324,6 +341,7 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         <CustomLabel name="Ciudad/Condado" />
                         <FormControl fullWidth margin="normal">
                             <TextField
+                                disabled={mainCountrySelected(formik.values.taxpayerwork_address_country)}
                                 placeholder="Ciudad/Condado"
                                 name="taxpayerwork_address_city"
                                 variant="outlined"
@@ -351,7 +369,7 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                 </Grid>
-            </Box>
+            </Box >
 
             <Box sx={{ my: '2rem !important', display: 'flex', justifyContent: 'center' }}>
                 {handleBack && (
@@ -389,7 +407,7 @@ const StepForm3 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     {isLastStep ? 'Enviar Solicitud' : 'Siguiente'}
                 </Button>
             </Box>
-        </form>
+        </form >
 
     );
 };

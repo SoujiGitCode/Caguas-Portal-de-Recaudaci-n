@@ -42,7 +42,7 @@ const theme = createTheme({
     fontFamily: [
       'Lato',
       'Montserrat-Medium',
-      'Montserrat-Black',
+      // 'Montserrat-Black',
       // Si Montserrat-Medium y Montserrat-Black no están disponibles,
       // el navegador usará la siguiente fuente disponible en la lista.
     ].join(','),
@@ -98,7 +98,6 @@ const theme = createTheme({
       fontWeight: 'normal',
       fontSize: '0.8rem',
     },
-    // ... (puedes añadir más variantes según tus necesidades)
   },
   components: {
     MuiButton: {
@@ -131,7 +130,7 @@ const theme = createTheme({
           width: "100%",
           '& .MuiOutlinedInput-root': {
             '& fieldset': {
-              height: '50px',
+              height: '48px',
               borderColor: borderColor,
               borderRadius: '32px', // Borde redondeado completo
               border: `1px solid ${borderColor}`,
@@ -158,6 +157,7 @@ const theme = createTheme({
           },
           '& .MuiOutlinedInput-input': {
             padding: "0.7rem",
+            fontSize: '0.8rem'
           },
 
           // Estilos para variant="filled"
@@ -202,7 +202,6 @@ const theme = createTheme({
         },
       },
     },
-
 
   },
 });

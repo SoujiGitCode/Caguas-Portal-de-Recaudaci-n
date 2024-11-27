@@ -140,7 +140,7 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     variant="h2"
                     sx={{
                         marginY: '1.5rem !important',
-                        fontSize: isMobile ? '1rem' : '1.2rem',
+                        fontSize: '1rem',
                         textAlign: isMobile ? 'center' : 'left',
                     }}
                 >
@@ -434,7 +434,7 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     {isLastStep ? 'Enviar Solicitud' : 'Siguiente'}
                 </Button>
             </Box>
-        </form>
+        </form >
 
 
 

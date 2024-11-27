@@ -2,22 +2,10 @@ import * as Yup from 'yup';
 
 export const Step4Validation = Yup.object().shape({
     // Información del Representante (Agent Info)
-    agent_info_first_name: Yup.string()
-        .required("Nombre del representante requerido")
+    agent_info_name: Yup.string()
+        .required("Nombre y Apellido del representante requerido")
         .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/, "Nombre inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
-    agent_info_second_name: Yup.string()
-        .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/, "Segundo nombre inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres")
-        .notRequired(),
-    agent_info_last_name: Yup.string()
-        .required("Apellido del representante requerido")
-        .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/, "Apellido inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
-    agent_info_second_last_name: Yup.string()
-        .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/, "Segundo apellido inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres")
-        .notRequired(),
+        .max(50, "Máximo 100 caracteres"),
     agent_info_email: Yup.string()
         .required("Correo electrónico del representante requerido")
         .email("Debe ser un correo electrónico válido")
@@ -32,22 +20,10 @@ export const Step4Validation = Yup.object().shape({
         .test('len', 'Deben ser 9 caracteres', val => val.length === 9),
 
     // Información de los Propietarios (Owner Info)
-    owner_info_first_name: Yup.string()
+    owner_info_name: Yup.string()
         .required("Nombre del propietario requerido")
         .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/, "Nombre inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
-    owner_info_second_name: Yup.string()
-        .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/, "Segundo nombre inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres")
-        .notRequired(),
-    owner_info_last_name: Yup.string()
-        .required("Apellido del propietario requerido")
-        .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/, "Apellido inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres"),
-    owner_info_second_last_name: Yup.string()
-        .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/, "Segundo apellido inválido (solo letras y espacios)")
-        .max(50, "Máximo 50 caracteres")
-        .notRequired(),
+        .max(50, "Máximo 100 caracteres"),
     owner_info_email: Yup.string()
         .required("Correo electrónico del propietario requerido")
         .email("Debe ser un correo electrónico válido")

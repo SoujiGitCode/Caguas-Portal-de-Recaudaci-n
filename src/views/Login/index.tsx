@@ -200,22 +200,32 @@ const Login = () => {
               sx={{
                 display: 'flex',
                 width: '100%',
-                alignItems: 'center'
+                alignItems: 'center',
               }}
             >
               <Grid container>
-                <Grid item xs={12} lg={3} sx={{ display: 'flex', justifyContent: isMobile ? 'center' : 'start', alignItems: 'center' }}>
+                <Grid item xs={12} lg={5} xl={4}
+                  sx={{
+                    display: 'flex',
+                    justifyContent: isMobile ? 'center' : 'start',
+                    alignItems: 'center',
+                  }}>
                   <FormControlLabel
                     control={<Checkbox color="primary" />}
                     label={
-                      <Typography sx={{ fontSize: "16px !important", color: "#3A3A3C" }}>
+                      <Typography
+                        sx={{
+                          fontSize: "16px !important",
+                          color: "#3A3A3C",
+
+                        }}>
                         Recordarme
                       </Typography>
                     }
                     sx={{ marginLeft: '1rem' }}
                   />
                 </Grid>
-                <Grid item xs={12} lg={4} sx={{ display: 'flex', justifyContent: isMobile ? 'center' : 'start', alignItems: 'center' }}>
+                <Grid item xs={12} lg={5} xl={6} sx={{ display: 'flex', justifyContent: isMobile ? 'center' : 'start', alignItems: 'center' }}>
                   <Typography
                     variant="caption"
                     component="a"

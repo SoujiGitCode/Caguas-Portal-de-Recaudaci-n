@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState, memo, useEffect } from 'react';
 import { Box, Stepper, Step, StepLabel, Paper, Typography, Button, useTheme, useMediaQuery, StepConnector, styled, stepConnectorClasses } from '@mui/material';
 import StepForm1 from './StepForm1';
 import StepForm2 from './StepForm2';
@@ -16,6 +16,7 @@ import BusinessIcon from '@mui/icons-material/Business';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import DoneIcon from '@mui/icons-material/Done';
 import React from 'react';
+import { getPatentData, makeStepAvailable } from './functions';
 
 const steps = [
     { label: 'Datos Generales', Component: memo(StepForm1), icon: <AccountBoxIcon /> },
@@ -122,7 +123,8 @@ export default function CreatePatent() {
     const token = useAuthStore((state: any) => state.token);
 
     const [activeStep, setActiveStep] = useState(0);
-    const [stepValidity, setStepValidity] = useState<boolean[]>(Array(steps.length).fill(false)); // Initialize all as invalid
+    const [stepValidity, setStepValidity] = useState<boolean[]>(Array(steps.length).fill(false));
+    const [patentData, setPatentData] = useState<any>(null);
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -132,11 +134,6 @@ export default function CreatePatent() {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const handleReset = () => {
-        setActiveStep(0);
-        setStepValidity(Array(steps.length).fill(false)); // Reset validity
-    };
-
     const handleStepClick = (index: number) => {
         if (stepValidity.slice(0, index).every((isValid) => isValid)) {
             setActiveStep(index);
@@ -144,6 +141,57 @@ export default function CreatePatent() {
     };
 
     const StepComponent = steps[activeStep]?.Component;
+
+    const fetchPatentData = async () => {
+        try {
+            const response = await getPatentData(token);
+            if (response.code === 200) {
+                setPatentData(response.data);
+                console.log(response.data)
+            } else {
+
+                console.log('Hubo un problema al cargar los datos del patente. Intente nuevamente.');
+            }
+            setTimeout(() => {
+
+            }, 400)
+        } catch (error) {
+
+            console.log('Error en el servidor al cargar los datos del patente. Intente nuevamente más tarde.');
+        }
+    };
+
+    useEffect(() => {
+        const fetchAndSetPatentData = async () => {
+            try {
+                const response = await getPatentData(token);
+                if (response.code === 200) {
+                    setPatentData(response.data);
+                    // Determinar el último paso basado en actual_page
+                    const lastStep = (response.data.actual_page || 1) - 1; // Actualizamos a un índice 0-based
+                    // const lastStep = 2;
+                    console.log('Último paso válido:', lastStep);
+                    // Establecer el paso activo correctamente
+                    setActiveStep(lastStep);
+
+                    console.log('Active Step:', activeStep);
+
+                    // Iterar y marcar como válidos solo los pasos hasta lastStep
+                    for (let i = 0; i <= lastStep; i++) {
+                        console.log('Activando paso:', i);
+                        makeStepAvailable(i - 1, setStepValidity);
+                    }
+                } else {
+                    console.log("Hubo un problema al cargar los datos del patente.");
+                }
+            } catch (error) {
+                console.log("Error en el servidor al cargar los datos del patente.");
+            }
+        };
+
+        fetchAndSetPatentData();
+    }, [token]);
+
 
 
     return (
@@ -158,7 +206,7 @@ export default function CreatePatent() {
                     '& .MuiStep-root': {
                         cursor: 'pointer',
                     },
-                    marginY: '2rem !important',
+                    marginY: '3rem !important',
                 }}
             >
                 {steps.map((step, index) => {
@@ -179,12 +227,26 @@ export default function CreatePatent() {
                                         activeStep={activeStep}
                                     />
                                 }
-                                sx={{
+                                sx={(theme) => ({
+                                    [theme.breakpoints.down('lg')]: {
+                                        justifyContent: 'center',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        textAlign: 'center',
+                                        '& .MuiStepLabel-label': {
+                                            marginTop: '1rem !important',
+                                            fontSize: '1.2rem !important',
+                                        },
+                                    },
                                     cursor: stepValidity[index] ? 'pointer !important' : 'not-allowed !important',
                                     '& .MuiStepLabel-label': {
-                                        color: stepValidity[index] ? 'inherit' : 'rgba(0, 0, 0, 0.38)',
+                                        fontSize: '0.8rem',
+                                        color: '#333333',
+                                        marginTop: '1rem !important',
+                                        // color: stepValidity[index] ? '#333333' : 'rgba(0, 0, 0, 0.4)',
                                     },
-                                }}
+                                })}
+
                                 onClick={() => {
                                     if (stepValidity[index]) {
                                         handleStepClick(index);
@@ -192,6 +254,7 @@ export default function CreatePatent() {
                                 }}
                             >
                                 {step.label}
+
                             </StepLabel>
                         </Step>
                     );
@@ -218,7 +281,6 @@ export default function CreatePatent() {
                     />
                 </Box>
             )}
-
 
             {/* Final Message */}
             {activeStep === steps.length && (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Grid, Typography, FormControl, TextField, MenuItem, Button, InputAdornment, IconButton } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import PhoneInput from '@/components/PhoneInput';
@@ -7,14 +7,53 @@ import { PATH } from "@/routes/constants";
 import TermsandConditionsCheckBox from '@/components/TermsAndConditionsCheckBox';
 import { CustomLabel } from '@/components';
 
+
 const UserRegistrationForm = ({ formik, questionsList, showPassword, setShowPassword, checkStatus, setCheckStatus, socialSecurityArray, setSocialSecurityArray, isMobile }) => {
+
+    const selectedQuestions = [
+        formik.values.security_question1,
+        formik.values.security_question2,
+        formik.values.security_question3,
+    ];
+
+    const getFilteredQuestions = (excludedQuestions: string[]) => {
+        return questionsList.filter((question) => !excludedQuestions.includes(question.title));
+    };
+
+    const [availableQuestions, setAvailableQuestions] = useState(questionsList);
+
+    const questionsConfig = [
+        { field: 'security_question1', label: 'Pregunta de Seguridad 1', answerField: 'security_answer1' },
+        { field: 'security_question2', label: 'Pregunta de Seguridad 2', answerField: 'security_answer2' },
+        { field: 'security_question3', label: 'Pregunta de Seguridad 3', answerField: 'security_answer3' },
+    ];
+
+
+    useEffect(() => {
+        const selectedQuestions = [
+            formik.values.security_question1,
+            formik.values.security_question2,
+            formik.values.security_question3,
+        ];
+
+        const filteredQuestions = questionsList.filter(
+            (question) => !selectedQuestions.includes(question.title)
+        );
+
+        setAvailableQuestions(filteredQuestions);
+    }, [
+        formik.values.security_question1,
+        formik.values.security_question2,
+        formik.values.security_question3,
+        questionsList,
+    ]);
+
+
     return (
         <form style={{ width: isMobile ? '100%' : '60%' }} onSubmit={formik.handleSubmit}>
             <Typography variant="h1"
                 gutterBottom sx={{ color: '#3A3A3C', fontSize: '1.8rem !important', fontWeight: 'bolder', marginBottom: "1em !important", textAlign: 'center' }}>
-
                 Registro de nueva cuenta información general del usuario
-
             </Typography>
 
             <Box>
@@ -174,169 +213,74 @@ const UserRegistrationForm = ({ formik, questionsList, showPassword, setShowPass
             </Box>
 
             <Box>
-                <Grid container spacing={0}>
-                    <Grid item xs={12} sx={{ paddingX: '1rem', marginBottom: '1rem !important' }}>
-                        <FormControl fullWidth variant="outlined" margin="normal">
-                            <CustomLabel name="Pregunta de Seguridad 1" required={true} />
-                            <TextField
-                                inputProps={{ readOnly: false }}
-                                select
-                                name="security_question1"
-                                id="security_question1"
-                                type="text"
-                                variant="outlined"
-                                // label="Seleccione una pregunta de Seguridad"
-                                value={formik.values.security_question1}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                // error={formik.touched.security_question1 && Boolean(formik.errors.security_question1)}
-                                // helperText={formik.touched.security_question1 && formik.errors.security_question1}
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        borderRadius: '32px', // Borde redondeado
-                                        '& fieldset': {
-                                            borderRadius: '32px', // Borde redondeado en el contorno
+                {questionsConfig.map((config, index) => (
+                    <Grid container spacing={0} key={index}>
+                        {/* Campo de Selección de Preguntas */}
+                        <Grid item xs={12} sx={{ paddingX: '1rem', marginBottom: '1rem !important' }}>
+                            <FormControl fullWidth variant="outlined" margin="normal">
+                                <CustomLabel name={config.label} required />
+                                <TextField
+                                    select
+                                    name={config.field}
+                                    id={config.field}
+                                    variant="outlined"
+                                    value={formik.values[config.field] || ""}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched[config.field] && Boolean(formik.errors[config.field])}
+                                    helperText={formik.touched[config.field] && formik.errors[config.field]}
+                                    sx={{
+                                        '& .MuiOutlinedInput-root': {
+                                            borderRadius: '32px',
+                                            '& fieldset': {
+                                                borderRadius: '32px',
+                                            },
                                         },
-                                    },
-                                }}
-                            >
-                                {questionsList.map((question, index) => (
-                                    <MenuItem key={index} value={question.title}>
-                                        {question.title}
+                                    }}
+                                >
+                                    <MenuItem value="none" disabled>
+                                        Seleccione {config.label}
                                     </MenuItem>
-                                ))}
-                            </TextField>
-                        </FormControl>
-                    </Grid>
+                                    {/* Filtrado dinámico */}
+                                    {questionsList
+                                        .filter(
+                                            (question) =>
+                                                !selectedQuestions.some(
+                                                    (selected) => selected === question.title && selected !== formik.values[config.field]
+                                                )
+                                        )
+                                        .map((question, idx) => (
+                                            <MenuItem key={idx} value={question.title}>
+                                                {question.title}
+                                            </MenuItem>
+                                        ))}
+                                </TextField>
+                            </FormControl>
+                        </Grid>
 
-                    <Grid item xs={12} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Respuesta a la pregunta de Seguridad 1" required={true} />
-                        <FormControl fullWidth margin="normal" required sx={{ marginBottom: "1.5em !important" }}>
-                            <TextField
-                                placeholder=''
-                                name="security_answer1"
-                                id="security_answer1"
-                                type="text"
-                                variant="outlined"
-                                value={formik.values.security_answer1}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.security_answer1 && Boolean(formik.errors.security_answer1)}
-                                helperText={formik.touched.security_answer1 && formik.errors.security_answer1}
-                            />
-                        </FormControl>
+                        {/* Campo de Respuesta */}
+                        <Grid item xs={12} sx={{ paddingX: '1rem' }}>
+                            <CustomLabel name={`Respuesta a ${config.label}`} required />
+                            <FormControl fullWidth margin="normal" required sx={{ marginBottom: '1.5em !important' }}>
+                                <TextField
+                                    placeholder={`Respuesta ${index + 1}`}
+                                    name={config.answerField}
+                                    id={config.answerField}
+                                    type="text"
+                                    variant="outlined"
+                                    value={formik.values[config.answerField]}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched[config.answerField] && Boolean(formik.errors[config.answerField])}
+                                    helperText={formik.touched[config.answerField] && formik.errors[config.answerField]}
+                                />
+                            </FormControl>
+                        </Grid>
                     </Grid>
-                </Grid>
-
+                ))}
             </Box>
 
-            <Box>
-                <Grid container spacing={0}>
-                    <Grid item xs={12} sx={{ paddingX: '1rem', marginBottom: '1rem !important' }}>
-                        <FormControl fullWidth variant="outlined" margin="normal">
-                            <CustomLabel name="Pregunta de Seguridad 2" required={true} />
-                            <TextField
-                                inputProps={{ readOnly: false }}
-                                select
-                                name="security_question2"
-                                id="security_question2"
-                                type="text"
-                                variant="outlined"
-                                value={formik.values.security_question2}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        borderRadius: '32px', // Borde redondeado
-                                        '& fieldset': {
-                                            borderRadius: '32px', // Borde redondeado en el contorno
-                                        },
-                                    },
-                                }}
-                            >
-                                {questionsList.map((question, index) => (
-                                    <MenuItem key={index} value={question.title}>
-                                        {question.title}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </FormControl>
-                    </Grid>
 
-                    <Grid item xs={12} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Respuesta a la pregunta de Seguridad 2" required={true} />
-                        <FormControl fullWidth margin="normal" required sx={{ marginBottom: "1.5em !important" }}>
-                            <TextField
-                                placeholder=''
-                                name="security_answer2"
-                                id="security_answer2"
-                                type="text"
-                                variant="outlined"
-                                value={formik.values.security_answer2}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.security_answer2 && Boolean(formik.errors.security_answer2)}
-                                helperText={formik.touched.security_answer2 && formik.errors.security_answer2}
-                            />
-                        </FormControl>
-                    </Grid>
-                </Grid>
-
-            </Box>
-
-            <Box>
-                <Grid container spacing={0}>
-                    <Grid item xs={12} sx={{ paddingX: '1rem', marginBottom: '1rem !important' }}>
-                        <FormControl fullWidth variant="outlined" margin="normal">
-                            <CustomLabel name="Pregunta de Seguridad 3" required={true} />
-                            <TextField
-                                inputProps={{ readOnly: false }}
-                                select
-                                name="security_question3"
-                                id="security_question3"
-                                type="text"
-                                variant="outlined"
-                                value={formik.values.security_question3}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                sx={{
-                                    '& .MuiOutlinedInput-root': {
-                                        borderRadius: '32px', // Borde redondeado
-                                        '& fieldset': {
-                                            borderRadius: '32px', // Borde redondeado en el contorno
-                                        },
-                                    },
-                                }}
-                            >
-                                {questionsList.map((question, index) => (
-                                    <MenuItem key={index} value={question.title}>
-                                        {question.title}
-                                    </MenuItem>
-                                ))}
-                            </TextField>
-                        </FormControl>
-                    </Grid>
-
-                    <Grid item xs={12} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Respuesta a la pregunta de Seguridad 3" required={true} />
-                        <FormControl fullWidth margin="normal" required sx={{ marginBottom: "1.5em !important" }}>
-                            <TextField
-                                placeholder=''
-                                name="security_answer3"
-                                id="security_answer3"
-                                type="text"
-                                variant="outlined"
-                                value={formik.values.security_answer3}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.security_answer3 && Boolean(formik.errors.security_answer3)}
-                                helperText={formik.touched.security_answer3 && formik.errors.security_answer3}
-                            />
-                        </FormControl>
-                    </Grid>
-                </Grid>
-
-            </Box>
 
 
             <Box>

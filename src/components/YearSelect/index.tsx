@@ -19,7 +19,7 @@ const YearSelect = ({ name, placeholder, required = false, formik, defaultOption
             variant="outlined"
             placeholder={placeholder}
             name={name}
-            value={formik.values[name]}
+            value={formik.values[name] || '0'}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched[name] && Boolean(formik.errors[name])}

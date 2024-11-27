@@ -1,6 +1,18 @@
 import api from "@/utils/services/api";
 import { patent, patentFiles, uploadPatentFile, submitPatent, deleteSinglePatentFile } from "@/utils";
+import { FormikProps } from "formik";
 
+export const VALID_COUNTRIES = ['US', 'DO', 'PR']
+
+interface TSCTypesOption {
+  value: number | string;
+  label: string;
+}
+
+export const TSC_TYPE: TSCTypesOption[] = [
+  { value: 1, label: 'Persona' },
+  { value: 2, label: 'Organización' },
+];
 
 export const makeStepAvailable = (currentStep: number, setStepValidity: (callback: (prev: boolean[]) => boolean[]) => void) => {
   setStepValidity((prev) =>
@@ -12,6 +24,11 @@ export const makeStepAvailable = (currentStep: number, setStepValidity: (callbac
 };
 
 
+export const MAIN_COUNTRY = 'US';
+
+export function mainCountrySelected(value: string): boolean {
+  return value !== MAIN_COUNTRY;
+}
 
 export interface StepFormProps {
   token: string,
@@ -32,8 +49,9 @@ export interface StepForm1Request {
   general_company_name: string;
   general_first_name: string;
   general_last_name: string;
-  general_second_name?: string; // Opcional, si es necesario
-  general_second_last_name?: string; // Opcional, si es necesario
+  general_second_name?: string;
+  general_second_last_name?: string;
+  general_tsc: string;
   token: string
 }
 
@@ -74,17 +92,11 @@ export interface StepForm3Request {
 }
 
 export interface StepForm4Request {
-  agent_info_first_name: string;
-  agent_info_second_name?: string;
-  agent_info_last_name: string;
-  agent_info_second_last_name?: string;
+  agent_info_name: string;
   agent_info_email: string;
   agent_info_role: string;
   agent_info_social_security: string;
-  owner_info_first_name: string;
-  owner_info_second_name?: string;
-  owner_info_last_name: string;
-  owner_info_second_last_name?: string;
+  owner_info_name: string;
   owner_info_email: string;
   owner_info_role: string;
   owner_info_social_security: string;
@@ -183,6 +195,7 @@ export const registerPatentPage1 = async ({
   general_last_name,
   general_second_name,
   general_second_last_name,
+  general_tsc,
   token,
 
 }: StepForm1Request) => {
@@ -202,6 +215,7 @@ export const registerPatentPage1 = async ({
         general_last_name,
         general_second_name,
         general_second_last_name,
+        general_tsc,
         page: 1
       },
     })
@@ -313,17 +327,11 @@ export const registerPatentPage3 = async ({
 
 
 export const registerPatentPage4 = async ({
-  agent_info_first_name,
-  agent_info_second_name,
-  agent_info_last_name,
-  agent_info_second_last_name,
+  agent_info_name,
   agent_info_email,
   agent_info_role,
   agent_info_social_security,
-  owner_info_first_name,
-  owner_info_second_name,
-  owner_info_last_name,
-  owner_info_second_last_name,
+  owner_info_name,
   owner_info_email,
   owner_info_role,
   owner_info_social_security,
@@ -335,17 +343,11 @@ export const registerPatentPage4 = async ({
 
     const res = await api.post({
       body: {
-        agent_info_first_name,
-        agent_info_second_name,
-        agent_info_last_name,
-        agent_info_second_last_name,
+        agent_info_name,
         agent_info_email,
         agent_info_role,
         agent_info_social_security,
-        owner_info_first_name,
-        owner_info_second_name,
-        owner_info_last_name,
-        owner_info_second_last_name,
+        owner_info_name,
         owner_info_email,
         owner_info_role,
         owner_info_social_security,
@@ -445,15 +447,13 @@ export const deletePatentFile = async ({
   token: string;
 }) => {
   try {
-    api.resource = deleteSinglePatentFile;
+    //URL dinámica con los parámetros
+    const urlDeleteFile = `${deleteSinglePatentFile}?patent_id=${patent_id}&file_id=${file_id}`;
+    // Configuramos el recurso base y el token
+    api.resource = urlDeleteFile;
     api.token = token;
-
-    const res = await api.delete({
-      body: JSON.stringify({
-        patent_id,
-        file_id,
-      }),
-    });
+    //solicitud DELETE
+    const res = await api.delete();
 
     return res;
   } catch (error) {
@@ -461,6 +461,7 @@ export const deletePatentFile = async ({
     throw error;
   }
 };
+
 
 export const submitPatentRequest = async (patent_id: string, token: string) => {
   try {
