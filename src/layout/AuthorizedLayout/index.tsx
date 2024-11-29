@@ -60,7 +60,7 @@ const AuthorizedLayout = () => {
 
             <Grid container sx={{ justifyContent: 'center', alignItems: 'start' }}>
               {/* Logo */}
-              <Grid item xs={12} sx={{ textAlign: 'center', background: 'white' }}>
+              <Grid item xs={12} sx={{ textAlign: 'center', background: 'white', padding: '22px !important' }}>
                 <img src={logo} alt="logo" style={{ height: '50px' }} />
               </Grid>
             </Grid>

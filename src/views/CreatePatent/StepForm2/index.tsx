@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box, Grid, Typography, FormControl, TextField, Button } from '@mui/material';
 import { useFormik } from 'formik';
-import { StepFormProps, mainCountrySelected } from '@/views/CreatePatent/functions';
-import { registerPatentPage2, getPatentData } from '@/views/CreatePatent/functions';
+import { StepFormProps, mainCountrySelected, StepForm2Request, registerPatentPage2, getPatentData } from '@/views/CreatePatent/functions';
 import { Step2Validation } from './Step2Validation';
 import { CustomLabel } from '@/components';
 import SimpleLoader from '@/components/SimpleLoader';
@@ -10,31 +9,10 @@ import useFormikValidation from '@/hooks/useFormikValidation';
 import CountrySelect from '@/components/CountrySelect';
 import { TSC_TYPE } from "../functions"
 
-interface FromValuesStep2 {
-    postal_address_line1: string;
-    postal_address_line2: string;
-    postal_address_number: string;
-    postal_address_country: string;
-    postal_address_state: string;
-    postal_address_city: string;
-    postal_address_zipcode: string;
-    address_line1: string;
-    address_line2: string;
-    address_number: string;
-    address_country: string;
-    address_state: string;
-    address_city: string;
-    address_zipcode: string;
-    token: string
-};
-
-
-
 const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: StepFormProps) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [patentData, setPatentData] = useState<any>(null);
     const [loading, setLoading] = useState(false);
-
 
     const initialFormData = {
         postal_address_line1: '',
@@ -54,7 +32,7 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
         token: token
     };
 
-    const formik = useFormik<FromValuesStep2>({
+    const formik = useFormik<StepForm2Request>({
         validateOnMount: true,
         initialValues: { ...initialFormData, ...patentData, token },
         enableReinitialize: true, // Reinitialize if `patentData` changes after loading
@@ -156,8 +134,8 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                 </Typography>
                 <Grid container spacing={0}>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Dirección 1" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Dirección 1" />
+                        <FormControl fullWidth margin="normal"  >
                             <TextField
                                 placeholder="Dirección 1"
                                 name="postal_address_line1"
@@ -186,8 +164,8 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Número de Propiedad" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Número de Propiedad" />
+                        <FormControl fullWidth margin="normal"  >
                             <TextField
                                 placeholder="Número de Propiedad"
                                 name="postal_address_number"
@@ -201,19 +179,22 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="País" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="País" />
+                        <FormControl fullWidth margin="normal"  >
                             <CountrySelect
                                 name="postal_address_country"
                                 formik={formik}
                             />
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Estado" required />
-                        <FormControl fullWidth margin="normal" required>
+                    <Grid item xs={12} lg={4}
+                        sx={{
+                            paddingX: '1rem',
+                            display: mainCountrySelected(formik.values.postal_address_country) ? 'block' : 'none'
+                        }}>
+                        <CustomLabel name="Estado" />
+                        <FormControl fullWidth margin="normal"  >
                             <TextField
-                                disabled={mainCountrySelected(formik.values.postal_address_country)}
                                 placeholder="Estado"
                                 name="postal_address_state"
                                 variant="outlined"
@@ -225,12 +206,14 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                             />
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Ciudad" required />
-                        <FormControl fullWidth margin="normal" required>
+                    <Grid item xs={12} lg={4} sx={{
+                        paddingX: '1rem',
+                        display: mainCountrySelected(formik.values.postal_address_country) ? 'block' : 'none'
+                    }}>
+                        <CustomLabel name="Ciudad/Condado" />
+                        <FormControl fullWidth margin="normal"  >
                             <TextField
-                                disabled={mainCountrySelected(formik.values.postal_address_country)}
-                                placeholder="Ciudad"
+                                placeholder="Ciudad/Condado"
                                 name="postal_address_city"
                                 variant="outlined"
                                 value={formik.values.postal_address_city}
@@ -242,8 +225,8 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Código Postal" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Código Postal" />
+                        <FormControl fullWidth margin="normal"  >
                             <TextField
                                 placeholder="Código Postal"
                                 name="postal_address_zipcode"
@@ -272,8 +255,8 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                 </Typography>
                 <Grid container spacing={0}>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Dirección 1" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Dirección 1" />
+                        <FormControl fullWidth margin="normal"  >
                             <TextField
                                 placeholder="Dirección 1"
                                 name="address_line1"
@@ -302,8 +285,8 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Número de Propiedad" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Número de Propiedad" />
+                        <FormControl fullWidth margin="normal"  >
                             <TextField
                                 placeholder="Número de Propiedad"
                                 name="address_number"
@@ -317,19 +300,22 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="País" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="País" />
+                        <FormControl fullWidth margin="normal"  >
                             <CountrySelect
                                 name="address_country"
                                 formik={formik}
                             />
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Estado" required />
-                        <FormControl fullWidth margin="normal" required>
+                    <Grid item xs={12} lg={4}
+                        sx={{
+                            paddingX: '1rem',
+                            display: mainCountrySelected(formik.values.postal_address_country) ? 'block' : 'none'
+                        }}>
+                        <CustomLabel name="Estado" />
+                        <FormControl fullWidth margin="normal"  >
                             <TextField
-                                disabled={mainCountrySelected(formik.values.address_country)}
                                 placeholder="Estado"
                                 name="address_state"
                                 variant="outlined"
@@ -341,12 +327,15 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                             />
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Ciudad" required />
-                        <FormControl fullWidth margin="normal" required>
+                    <Grid item xs={12} lg={4}
+                        sx={{
+                            paddingX: '1rem',
+                            display: mainCountrySelected(formik.values.address_country) ? 'block' : 'none'
+                        }}>
+                        <CustomLabel name="Ciudad/Condado" />
+                        <FormControl fullWidth margin="normal"  >
                             <TextField
-                                disabled={mainCountrySelected(formik.values.address_country)}
-                                placeholder="Ciudad"
+                                placeholder="Ciudad/Condado"
                                 name="address_city"
                                 variant="outlined"
                                 value={formik.values.address_city}
@@ -358,8 +347,8 @@ const StepForm2 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Código Postal" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Código Postal" />
+                        <FormControl fullWidth margin="normal"  >
                             <TextField
                                 placeholder="Código Postal"
                                 name="address_zipcode"

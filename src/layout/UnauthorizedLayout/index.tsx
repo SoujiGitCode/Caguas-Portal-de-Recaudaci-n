@@ -39,7 +39,7 @@ const UnautoziredLayout = () => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sx={{ padding: '22px !important' }}>
               <img src={logo} alt="logo" width={"200px"} />
             </Grid>
           </Grid>

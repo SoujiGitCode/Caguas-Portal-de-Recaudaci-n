@@ -206,7 +206,7 @@ export default function CreatePatent() {
                     '& .MuiStep-root': {
                         cursor: 'pointer',
                     },
-                    marginY: '3rem !important',
+                    marginY: '2rem !important',
                 }}
             >
                 {steps.map((step, index) => {
@@ -266,7 +266,7 @@ export default function CreatePatent() {
             {activeStep < steps.length && StepComponent && (
                 <Box
                     sx={{
-                        mt: 4,
+                        mt: 1,
                         minHeight: '110dvh'
                     }}
                 >

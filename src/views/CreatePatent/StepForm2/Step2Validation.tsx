@@ -4,7 +4,7 @@ import { VALID_COUNTRIES, MAIN_COUNTRY } from "../functions"
 export const Step2Validation = Yup.object().shape({
     // Dirección Postal
     postal_address_line1: Yup.string()
-        .required("Dirección 1 requerida")
+        // .required("Dirección 1 requerida")
         .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s,.#-]+$/, "Formato inválido (solo letras, números, espacios y caracteres válidos como ,. # -)")
         .max(100, "Máximo 100 caracteres"),
     postal_address_line2: Yup.string()
@@ -12,10 +12,10 @@ export const Step2Validation = Yup.object().shape({
         .max(100, "Máximo 100 caracteres")
         .notRequired(),
     postal_address_number: Yup.string()
-        .required("Número de Propiedad requerido")
+        // .required("Número de Propiedad requerido")
         .matches(/^[0-9]+$/, "Solo debe contener números"),
     postal_address_country: Yup.string()
-        .required("País requerido")
+        // .required("País requerido")
         .oneOf(VALID_COUNTRIES, 'Debes seleccionar un país válido'),
     postal_address_state: Yup.string()
         .when('postal_address_country', {
@@ -32,12 +32,12 @@ export const Step2Validation = Yup.object().shape({
             otherwise: (schema) => schema.notRequired(),
         }),
     postal_address_zipcode: Yup.string()
-        .required("Código Postal requerido")
+        // .required("Código Postal requerido")
         .matches(/^[0-9]{5}$/, "Debe ser un código postal válido de 5 dígitos"),
 
     // Dirección Física
     address_line1: Yup.string()
-        .required("Dirección 1 requerida")
+        // .required("Dirección 1 requerida")
         .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s,.#-]+$/, "Formato inválido (solo letras, números, espacios y caracteres válidos como ,. # -)")
         .max(100, "Máximo 100 caracteres"),
     address_line2: Yup.string()
@@ -45,10 +45,10 @@ export const Step2Validation = Yup.object().shape({
         .max(100, "Máximo 100 caracteres")
         .notRequired(),
     address_number: Yup.string()
-        .required("Número de Propiedad requerido")
+        // .required("Número de Propiedad requerido")
         .matches(/^[0-9]+$/, "Solo debe contener números"),
     address_country: Yup.string()
-        .required("País requerido")
+        // .required("País requerido")
         .oneOf(VALID_COUNTRIES, 'Debes seleccionar un país válido'),
     address_state: Yup.string()
         .when('address_country', {
@@ -65,6 +65,6 @@ export const Step2Validation = Yup.object().shape({
             otherwise: (schema) => schema.notRequired(),
         }),
     address_zipcode: Yup.string()
-        .required("Código Postal requerido")
+        // .required("Código Postal requerido")
         .matches(/^[0-9]{5}$/, "Debe ser un código postal válido de 5 dígitos"),
 });

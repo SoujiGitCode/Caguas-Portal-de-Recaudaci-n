@@ -129,12 +129,12 @@ const theme = createTheme({
         root: {
           width: "100%",
           '& .MuiOutlinedInput-root': {
+            backgroundColor: "#ffffff", // Fondo blanco solo para el área de entrada
+            borderRadius: '32px', // Borde redondeado completo
+            height: '48px',
+            border: `1px solid ${borderColor}`,
+            padding: '8px 16px', // Padding personalizado
             '& fieldset': {
-              height: '48px',
-              borderColor: borderColor,
-              borderRadius: '32px', // Borde redondeado completo
-              border: `1px solid ${borderColor}`,
-              padding: '8px 16px', // Padding personalizado
             },
             '&:hover fieldset': {
               borderColor: borderHover,

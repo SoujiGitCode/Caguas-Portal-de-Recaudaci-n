@@ -1,7 +1,6 @@
-import React from 'react';
 import { MenuItem, TextField, Box, Avatar } from '@mui/material';
 import USFlag from '../../assets/flags/us.svg';
-import DOFlag from '@/assets/flags/do.svg';
+import CAFlag from '@/assets/flags/ca.svg';
 import PRFlag from '@/assets/flags/pr.svg';
 import { FormikProps } from 'formik';
 
@@ -16,7 +15,7 @@ function CountrySelect<T>({
 }: CountrySelectProps<T>) {
     const countries = [
         { label: 'Estados Unidos', value: 'US', flag: USFlag },
-        { label: 'República Dominicana', value: 'DO', flag: DOFlag },
+        { label: 'Canada', value: 'CA', flag: CAFlag },
         { label: 'Puerto Rico', value: 'PR', flag: PRFlag },
     ];
 

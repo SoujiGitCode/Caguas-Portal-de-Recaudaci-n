@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Box, Grid, Typography, FormControl, TextField, Button, InputLabel, MenuItem, styled } from '@mui/material';
 import { useFormik } from 'formik';
-import { makeStepAvailable, StepFormProps } from '@/views/CreatePatent/functions';
-import { registerPatentPage5, getPatentData } from '@/views/CreatePatent/functions';
+import { makeStepAvailable, StepFormProps, registerPatentPage5, getPatentData, StepForm5Request } from '@/views/CreatePatent/functions';
 import { Step5Validation } from './Step5Validation';
 import { CustomLabel } from '@/components';
 import SimpleLoader from '@/components/SimpleLoader';
@@ -67,7 +66,7 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
         token: token
     };
 
-    const formik = useFormik({
+    const formik = useFormik<StepForm5Request>({
         validateOnMount: true,
         initialValues: { ...initialFormData, ...patentData, token },
         enableReinitialize: true,
@@ -148,8 +147,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                 </Typography>
                 <Grid container spacing={0}>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Fecha de comienzo de operaciones" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name=" " />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 type='date'
                                 placeholder="Fecha de comienzo de operaciones"
@@ -167,8 +166,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Nombre de la localidad (Según Registro de Comerciante)" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Nombre de la localidad (Según Registro de Comerciante)" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Nombre de la localidad"
                                 name="business_info_location_name"
@@ -182,8 +181,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Clase de Industria (Código Naics)" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Clase de Industria (Código Naics)" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Clase de Industria"
                                 name="business_info_industry"
@@ -197,8 +196,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Actividad del Negocio" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Actividad del Negocio" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Actividad del Negocio"
                                 name="business_info_activity"
@@ -212,8 +211,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Número de Registro de Comerciante" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Número de Registro de Comerciante" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Número de Registro de Comerciante"
                                 name="business_info_register_number"
@@ -227,8 +226,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Fecha de vencimiento del Registro de Comerciante" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Fecha de vencimiento del Registro de Comerciante" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 type='date'
                                 placeholder="Fecha de vencimiento"
@@ -246,8 +245,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="¿Es agente de retención?" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="¿Es agente de retención?" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 select
                                 placeholder="¿Es agente de retención?"
@@ -267,8 +266,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
 
 
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Cantidad de empleados" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Cantidad de empleados" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Cantidad de empleados"
                                 name="business_info_employees"
@@ -282,8 +281,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Costo anual de nómina" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Costo anual de nómina" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Costo anual de nómina"
                                 name="business_info_total_annual_labor_costs"
@@ -298,7 +297,7 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
                         <CustomLabel name="Número de Catastro (Si aplica)" />
-                        <FormControl fullWidth margin="normal" required>
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Número de Catastro"
                                 name="business_info_cadastral_reference_number"
@@ -312,8 +311,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="¿Requiere Permiso de Uso?" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="¿Requiere Permiso de Uso?" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 select
                                 placeholder="¿Requiere Permiso de Uso?"
@@ -331,8 +330,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Número del Permiso de Uso" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Número del Permiso de Uso" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Número del Permiso de Uso"
                                 name="business_info_permit_use_number"
@@ -346,8 +345,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Fecha de vencimiento del Permiso de Uso" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Fecha de vencimiento del Permiso de Uso" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 type='date'
                                 placeholder="Fecha de vencimiento"
@@ -365,8 +364,8 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Descripción del Permiso de Uso (80 Caracteres)" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Descripción del Permiso de Uso (80 Caracteres)" />
+                        <FormControl fullWidth margin="normal" >
                             <TextareaAutosize
                                 name="business_info_permit_use_number_description"
                                 value={formik.values.business_info_permit_use_number_description}
@@ -375,7 +374,7 @@ const StepForm5 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                                     formik.setFieldValue('business_info_permit_use_number_description', value); // Actualizar Formik
                                 }}
                                 onBlur={formik.handleBlur}
-                                placeholder="Describe el permiso de uso aquí..."
+                                placeholder="Describa el permiso de uso aquí..."
                                 rows={3}
                                 style={{
                                     width: '100%',

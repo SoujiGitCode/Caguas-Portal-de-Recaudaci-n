@@ -2,12 +2,12 @@ import * as Yup from 'yup';
 
 export const Step1Validation = Yup.object().shape({
     record_type: Yup.string()
-        .required("Tipo de Registro requerido")
+        // .required("Tipo de Registro requerido")
         .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras, números y espacios)")
         .max(100, "Máximo 100 caracteres"),
 
     patent_type: Yup.string()
-        .required("Tipo de Patente requerido")
+        // .required("Tipo de Patente requerido")
         .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras, números y espacios)")
         .max(100, "Máximo 100 caracteres"),
 
@@ -16,7 +16,7 @@ export const Step1Validation = Yup.object().shape({
         .notOneOf(["0"], "Debe seleccionar un año fiscal válido"),
 
     general_phone: Yup.string()
-        .required("Teléfono requerido")
+        // .required("Teléfono requerido")
         .test(
             "is-valid-phone",
             "El formato del teléfono es invalido",
@@ -33,17 +33,17 @@ export const Step1Validation = Yup.object().shape({
 
 
     general_company_name: Yup.string()
-        .required("Nombre de la organización requerido")
+        // .required("Nombre de la organización requerido")
         .matches(/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ\s]+$/, "Formato inválido (solo letras, números y espacios)")
         .max(100, "Máximo 100 caracteres"),
 
     general_first_name: Yup.string()
-        .required("Nombre del contribuyente requerido")
+        // .required("Nombre del contribuyente requerido")
         .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/, "Nombre inválido (solo letras y espacios)")
         .max(50, "Máximo 50 caracteres"),
 
     general_last_name: Yup.string()
-        .required("Apellidos del contribuyente requeridos")
+        // .required("Apellidos del contribuyente requeridos")
         .matches(/^[^\d_!¡?÷?¿/\\+=@#$%^&*(){}|~<>;:[\]]+$/, "Apellidos inválidos (solo letras y espacios)")
         .max(50, "Máximo 50 caracteres"),
 

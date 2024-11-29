@@ -1,26 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Box, Grid, Typography, FormControl, TextField, Button } from '@mui/material';
 import { useFormik } from 'formik';
-import { makeStepAvailable, StepFormProps } from '@/views/CreatePatent/functions';
-import { registerPatentPage4, getPatentData } from '@/views/CreatePatent/functions';
+import { makeStepAvailable, StepFormProps, registerPatentPage4, getPatentData, StepForm4Request } from '@/views/CreatePatent/functions';
 import { Step4Validation } from './Step4Validation';
 import { CustomLabel } from '@/components';
 import SimpleLoader from '@/components/SimpleLoader';
 import useFormikValidation from '@/hooks/useFormikValidation';
-
-interface FormValuesStep4 {
-    agent_info_name: string;
-    agent_info_email: string;
-    agent_info_role: string;
-    agent_info_social_security: string;
-    owner_info_name: string;
-    owner_info_email: string;
-    owner_info_role: string;
-    owner_info_social_security: string;
-    token: string;
-}
-
-
 
 const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setStepValidity, currentStep }: StepFormProps) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -39,7 +24,7 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
         token: token
     };
 
-    const formik = useFormik<FormValuesStep4>({
+    const formik = useFormik<StepForm4Request>({
         validateOnMount: true,
         initialValues: { ...initialFormData, ...patentData, token },
         enableReinitialize: true,
@@ -118,8 +103,8 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                 </Typography>
                 <Grid container spacing={0}>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Nombre" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Nombre" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Nombre"
                                 name="agent_info_name"
@@ -133,8 +118,8 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Correo Electrónico" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Correo Electrónico" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Correo Electrónico"
                                 name="agent_info_email"
@@ -148,8 +133,8 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Posición del Dueño o Representante" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Posición del Dueño o Representante" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Posición del Dueño o Representante"
                                 name="agent_info_role"
@@ -163,8 +148,8 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Seguro Social" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Seguro Social" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Seguro Social"
                                 name="agent_info_social_security"
@@ -197,8 +182,8 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                 </Typography>
                 <Grid container spacing={0}>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Nombre" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Nombre" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Nombre"
                                 name="owner_info_name"
@@ -212,23 +197,8 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Apellido" required />
-                        <FormControl fullWidth margin="normal" required>
-                            <TextField
-                                placeholder="Apellido"
-                                name="owner_info_last_name"
-                                variant="outlined"
-                                value={formik.values.owner_info_last_name}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.owner_info_last_name && Boolean(formik.errors.owner_info_last_name)}
-                                helperText={formik.touched.owner_info_last_name && formik.errors.owner_info_last_name}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Correo Electrónico" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Correo Electrónico" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Correo Electrónico"
                                 name="owner_info_email"
@@ -242,8 +212,8 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Posición del Dueño o Representante" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Posición del Dueño o Representante" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Posición del Dueño o Representante"
                                 name="owner_info_role"
@@ -257,8 +227,8 @@ const StepForm4 = ({ handleNext, handleBack, isLastStep, token, isMobile, setSte
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} lg={4} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Seguro Social" required />
-                        <FormControl fullWidth margin="normal" required>
+                        <CustomLabel name="Seguro Social" />
+                        <FormControl fullWidth margin="normal" >
                             <TextField
                                 placeholder="Seguro Social"
                                 name="owner_info_social_security"

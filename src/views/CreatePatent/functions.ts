@@ -2,7 +2,7 @@ import api from "@/utils/services/api";
 import { patent, patentFiles, uploadPatentFile, submitPatent, deleteSinglePatentFile } from "@/utils";
 import { FormikProps } from "formik";
 
-export const VALID_COUNTRIES = ['US', 'DO', 'PR']
+export const VALID_COUNTRIES = ['US', 'CA', 'PR']
 
 interface TSCTypesOption {
   value: number | string;
@@ -27,7 +27,7 @@ export const makeStepAvailable = (currentStep: number, setStepValidity: (callbac
 export const MAIN_COUNTRY = 'US';
 
 export function mainCountrySelected(value: string): boolean {
-  return value !== MAIN_COUNTRY;
+  return value === MAIN_COUNTRY;
 }
 
 export interface StepFormProps {
@@ -128,8 +128,15 @@ export interface StepForm6Request {
   token: string;
 }
 
+
 export interface StepForm7Request {
   patent_id: string;
+  signature_date: string;
+  signature_time: string;
+  signature_location: string;
+  signature_first_name: string;
+  signature_last_name: string;
+  signature: string;
   token: string;
 }
 
@@ -463,7 +470,16 @@ export const deletePatentFile = async ({
 };
 
 
-export const submitPatentRequest = async (patent_id: string, token: string) => {
+export const submitPatentRequest = async ({
+  patent_id,
+  signature_time,
+  signature_date,
+  signature_location,
+  signature_first_name,
+  signature_last_name,
+  signature,
+  token
+}: StepForm7Request) => {
   try {
     api.resource = submitPatent;
     api.token = token;
@@ -471,6 +487,12 @@ export const submitPatentRequest = async (patent_id: string, token: string) => {
     const res = await api.post({
       body: {
         patent_id,
+        signature_date,
+        signature_time,
+        signature_location,
+        signature_first_name,
+        signature_last_name,
+        signature
       },
     });
 

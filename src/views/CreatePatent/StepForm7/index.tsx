@@ -1,59 +1,107 @@
 import { useState, useEffect } from 'react';
-import { Box, Button, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
-import { submitPatentRequest, getPatentData } from '@/views/CreatePatent/functions';
+import { Box, Button, Typography, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, FormControl, TextField } from '@mui/material';
+import { submitPatentRequest, getPatentData, StepForm7Request } from '@/views/CreatePatent/functions';
 import { StepFormProps } from '@/views/CreatePatent/functions';
 import SimpleLoader from '@/components/SimpleLoader';
 import { patent } from '@/utils';
+import { CustomLabel, PatentDataTable } from '@/components';
+import { useFormik } from 'formik';
+import { Step7Validation } from './Step7Validations';
+import useFormikValidation from '@/hooks/useFormikValidation';
+import ConfirmationDialog from '../ConfirmationDialog';
 
 const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: StepFormProps) => {
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [openConfirm, setOpenConfirm] = useState(false);
-    const [patentId, setPatentId] = useState<string | null>(null);
+    const [patentData, setPatentData] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [submissionSuccess, setSubmissionSuccess] = useState<boolean | null>(null);
 
-    useEffect(() => {
-        const fetchPatentId = async () => {
+    const initialFormData = {
+        patent_id: '',
+        signature_date: '',
+        signature_time: '',
+        signature_location: '',
+        signature_first_name: '',
+        signature_last_name: '',
+        signature: '',
+        owner_info_social_security: '',
+        token: token
+    };
+
+    const formik = useFormik<StepForm7Request>({
+        validateOnMount: true,
+        initialValues: { ...initialFormData, ...patentData, token },
+        enableReinitialize: true, // Reinitialize if `patentData` changes after loading
+        validationSchema: Step7Validation,
+        onSubmit: async (values) => {
             try {
-                const patentData = await getPatentData(token);
-                if (patentData && patentData.data && patentData.data.id) {
-                    setPatentId(patentData.data.id);
+                setLoading(true)
+                const response = await submitPatentRequest(values);
+                if (response.code === 200) {
+                    // Si la solicitud fue exitosa, limpiamos el mensaje de error (si había) y pasamos al siguiente paso
+                    setErrorMessage(null);
+                    setTimeout(() => {
+                        setLoading(false)
+                    }, 400)
+                    handleNext();
+                } else {
+                    setLoading(false)
+                    // Si hay algún código diferente, establecemos un mensaje de error
+                    setErrorMessage('Hubo un problema al procesar la solicitud. Intente nuevamente.');
+                }
+            } catch (error) {
+                setLoading(false)
+                // En caso de error en la solicitud, mostramos un mensaje de error
+                setErrorMessage('Error en el servidor. Intente nuevamente más tarde.');
+            }
+        },
+    });
+
+
+    useEffect(() => {
+        const fetchPatentData = async () => {
+            setLoading(true);
+            try {
+                const response = await getPatentData(token);
+                if (response.code === 200) {
+                    setPatentData(response.data);
+                } else {
+                    console.log('Hubo un problema al cargar los datos. Intente nuevamente.');
                 }
                 setLoading(false);
             } catch (error) {
                 setLoading(false);
-                console.error("Error fetching patent data:", error);
+                console.log('Error en el servidor al cargar los datos. Intente nuevamente más tarde.');
             }
         };
+        fetchPatentData();
 
-        fetchPatentId();
     }, [token]);
 
     const handleRegisterClick = () => {
         setOpenConfirm(true);
     };
 
-    const handleConfirmClose = () => {
+    const handleDialogClose = () => {
         setOpenConfirm(false);
+    };
+
+    const validateCredentials = async (): Promise<boolean> => {
+        // Simula una llamada a un endpoint
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(true); // Retorna true siempre por ahora
+            }, 1000);
+        });
     };
 
     const handleConfirmSubmit = async () => {
-        setOpenConfirm(false);
-        setLoading(true);
-        setSubmissionSuccess(null);
-
-        if (patentId) {
-            try {
-                // Pasar un objeto con `patent_id` y `token` como lo espera `submitPatent`
-                await submitPatentRequest(patentId, token);
-                setSubmissionSuccess(true);
-            } catch (error) {
-                setSubmissionSuccess(false);
-                console.error("Error submitting patent:", error);
-            } finally {
-                setLoading(false);
-            }
-        }
+        setOpenConfirm(false); // Cierra el diálogo de confirmación
+        await formik.submitForm(); // Llama al onSubmit de Formik
     };
+
+    useFormikValidation(formik);
 
     if (loading) {
         return <SimpleLoader />;
@@ -62,9 +110,7 @@ const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
     return (
         <Box
             sx={{
-                padding: "2rem",
                 maxWidth: "100%",
-                margin: "4rem auto",
                 textAlign: "center",
             }}
         >
@@ -92,16 +138,163 @@ const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
 
             {submissionSuccess === null &&
                 <>
+                    <PatentDataTable data={patentData} isMobile={isMobile} />
+
+                    <form onSubmit={formik.handleSubmit} style={{ width: "100%" }}>
+                        <Box>
+                            <Typography
+                                variant="h2"
+                                sx={{
+                                    marginY: "1rem !important",
+                                    fontSize: "1rem",
+                                    textAlign: "center",
+                                }}
+                            >
+                                Sección Firma
+                            </Typography>
+                            <Grid container spacing={0}>
+                                <Grid item xs={12} lg={4} sx={{ paddingX: "1rem" }}>
+                                    <CustomLabel name="Fecha" />
+                                    <FormControl fullWidth margin="normal">
+                                        <TextField
+                                            type="date"
+                                            name="signature_date"
+                                            variant="outlined"
+                                            value={formik.values.signature_date}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            error={
+                                                formik.touched.signature_date &&
+                                                Boolean(formik.errors.signature_date)
+                                            }
+                                            helperText={
+                                                formik.touched.signature_date &&
+                                                formik.errors.signature_date
+                                            }
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} lg={4} sx={{ paddingX: "1rem" }}>
+                                    <CustomLabel name="Hora" />
+                                    <FormControl fullWidth margin="normal">
+                                        <TextField
+                                            type="time"
+                                            name="signature_time"
+                                            variant="outlined"
+                                            value={formik.values.signature_time}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            error={
+                                                formik.touched.signature_time &&
+                                                Boolean(formik.errors.signature_time)
+                                            }
+                                            helperText={
+                                                formik.touched.signature_time &&
+                                                formik.errors.signature_time
+                                            }
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} lg={4} sx={{ paddingX: "1rem" }}>
+                                    <CustomLabel name="Ubicación" />
+                                    <FormControl fullWidth margin="normal">
+                                        <TextField
+                                            placeholder="Ubicación"
+                                            name="signature_location"
+                                            variant="outlined"
+                                            value={formik.values.signature_location}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            error={
+                                                formik.touched.signature_location &&
+                                                Boolean(formik.errors.signature_location)
+                                            }
+                                            helperText={
+                                                formik.touched.signature_location &&
+                                                formik.errors.signature_location
+                                            }
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} lg={4} sx={{ paddingX: "1rem" }}>
+                                    <CustomLabel name="Primer Nombre" />
+                                    <FormControl fullWidth margin="normal">
+                                        <TextField
+                                            placeholder="Primer Nombre"
+                                            name="signature_first_name"
+                                            variant="outlined"
+                                            value={formik.values.signature_first_name}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            error={
+                                                formik.touched.signature_first_name &&
+                                                Boolean(formik.errors.signature_first_name)
+                                            }
+                                            helperText={
+                                                formik.touched.signature_first_name &&
+                                                formik.errors.signature_first_name
+                                            }
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} lg={4} sx={{ paddingX: "1rem" }}>
+                                    <CustomLabel name="Apellido" />
+                                    <FormControl fullWidth margin="normal">
+                                        <TextField
+                                            placeholder="Apellido"
+                                            name="signature_last_name"
+                                            variant="outlined"
+                                            value={formik.values.signature_last_name}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            error={
+                                                formik.touched.signature_last_name &&
+                                                Boolean(formik.errors.signature_last_name)
+                                            }
+                                            helperText={
+                                                formik.touched.signature_last_name &&
+                                                formik.errors.signature_last_name
+                                            }
+                                        />
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={12} lg={4} sx={{ paddingX: "1rem" }}>
+                                    <CustomLabel name="Firma" />
+                                    <FormControl fullWidth margin="normal">
+                                        <TextField
+                                            placeholder="Firma"
+                                            name="signature"
+                                            variant="outlined"
+                                            value={formik.values.signature}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            error={
+                                                formik.touched.signature &&
+                                                Boolean(formik.errors.signature)
+                                            }
+                                            helperText={
+                                                formik.touched.signature &&
+                                                formik.errors.signature
+                                            }
+                                        />
+                                    </FormControl>
+                                </Grid>
+                            </Grid>
+                        </Box>
+
+                    </form>
+
                     <Typography
                         sx={{
                             fontFamily: "GothamMedium",
-                            fontSize: "1.4rem",
+                            fontSize: "1.2rem",
                             fontWeight: "bold",
                             color: "#333",
-                            marginBottom: "1.5rem",
+                            marginTop: "3rem !important",
+                            marginBottom: '1.5rem !important'
                         }}
                     >
-                        Confirmación de Registro de Patente
+                        Confirmación de Registro de Patente!
                     </Typography>
 
                     <Typography
@@ -134,6 +327,7 @@ const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                             </Button>
                         )}
                         <Button
+                            disabled={!formik.isValid}
                             sx={{
                                 width: "120px",
                                 height: "40px",
@@ -152,54 +346,16 @@ const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                     </Box>
 
                 </>
-            }
 
-            <Dialog
+
+            }
+            <ConfirmationDialog
                 open={openConfirm}
-                onClose={handleConfirmClose}
-                aria-labelledby="confirm-dialog-title"
-                aria-describedby="confirm-dialog-description"
-            >
-                <DialogTitle id="confirm-dialog-title">Confirmación de Envío</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="confirm-dialog-description">
-                        ¿Está seguro que desea enviar la patente? No podrá hacer cambios una vez enviada.
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        sx={{
-                            width: "120px",
-                            height: "40px",
-                            padding: "8px 15px",
-                            borderRadius: "32px",
-                            border: "1px solid",
-                            fontSize: '0.8rem !important',
-                            marginRight: "1rem !important",
-                        }}
-                        onClick={handleConfirmClose}>
-                        Cancelar
-                    </Button>
-                    <Button
-                        sx={{
-                            width: "120px",
-                            height: "40px",
-                            padding: "8px 15px",
-                            borderRadius: "32px",
-                            border: "1px solid",
-                            fontSize: '0.8rem !important',
-                        }}
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        onClick={handleConfirmSubmit}
-                        autoFocus>
-                        Confirmar
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                onClose={handleDialogClose}
+                // onSubmit={validateCredentials}
+                onConfirm={handleConfirmSubmit}
+                isMobile={isMobile}
+            />
         </Box>
     );
 };
