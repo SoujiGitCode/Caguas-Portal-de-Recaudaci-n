@@ -17,10 +17,15 @@ const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
     const [loading, setLoading] = useState(true);
     const [submissionSuccess, setSubmissionSuccess] = useState<boolean | null>(null);
 
+
+    const now = new Date();
+    const formattedDate = now.toISOString().split("T")[0]; // Fecha en formato yyyy-mm-dd
+    const formattedTime = now.toTimeString().slice(0, 5); // Hora en formato hh:mm
+
     const initialFormData = {
         patent_id: patentData?.id || '',
-        signature_date: '',
-        signature_time: '',
+        signature_date: formattedDate, // Fecha actual
+        signature_time: formattedTime, // Hora actual
         signature_location: '',
         signature_first_name: '',
         signature_last_name: '',
@@ -31,7 +36,8 @@ const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
 
     const formik = useFormik<StepForm7Request>({
         validateOnMount: true,
-        initialValues: { ...initialFormData, ...patentData, token },
+        // initialValues: { ...initialFormData, ...patentData, token },
+        initialValues: { ...initialFormData, ...patentData, signature_date: formattedDate, signature_time: formattedTime, token },
         enableReinitialize: true, // Reinitialize if `patentData` changes after loading
         validationSchema: Step7Validation,
         onSubmit: async (values) => {
@@ -174,6 +180,9 @@ const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                                                 formik.touched.signature_date &&
                                                 formik.errors.signature_date
                                             }
+                                            InputProps={{
+                                                readOnly: true,
+                                            }}
                                         />
                                     </FormControl>
                                 </Grid>
@@ -195,6 +204,9 @@ const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
                                                 formik.touched.signature_time &&
                                                 formik.errors.signature_time
                                             }
+                                            InputProps={{
+                                                readOnly: true,
+                                            }}
                                         />
                                     </FormControl>
                                 </Grid>
