@@ -18,7 +18,7 @@ const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
     const [submissionSuccess, setSubmissionSuccess] = useState<boolean | null>(null);
 
     const initialFormData = {
-        patent_id: '',
+        patent_id: patentData?.id || '',
         signature_date: '',
         signature_time: '',
         signature_location: '',
@@ -36,6 +36,9 @@ const StepForm7 = ({ handleNext, handleBack, isLastStep, token, isMobile }: Step
         validationSchema: Step7Validation,
         onSubmit: async (values) => {
             try {
+                console.log('patent data')
+                console.log(patentData)
+
                 setLoading(true)
                 const response = await submitPatentRequest(values);
                 if (response.code === 200) {

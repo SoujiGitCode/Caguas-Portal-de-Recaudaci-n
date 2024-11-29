@@ -107,7 +107,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                     >
                         <CustomLabel name="Correo Electrónico" required={true} />
                         <TextField
-                            placeholder="correo"
+                            placeholder="Correo Electrónico"
                             name="email"
                             id="email"
                             type="email"
@@ -123,6 +123,7 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
                     >
                         <CustomLabel name="Contraseña" required={true} />
                         <TextField
+                            placeholder="Contraseña"
                             name="password"
                             id="password"
                             type="password"
