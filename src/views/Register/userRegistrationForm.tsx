@@ -59,10 +59,10 @@ const UserRegistrationForm = ({ formik, questionsList, showPassword, setShowPass
             <Box>
                 <Grid container spacing={0}>
                     <Grid item xs={12} lg={6} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Primer Nombre" required={true} />
+                        <CustomLabel name="Nombre" required={true} />
                         <FormControl fullWidth margin="normal" required sx={{ marginBottom: "1.5em !important" }}>
                             <TextField
-                                placeholder='Primer Nombre'
+                                placeholder='Nombre'
                                 name="firstName"
                                 id="firstName"
                                 type="text"
@@ -75,35 +75,12 @@ const UserRegistrationForm = ({ formik, questionsList, showPassword, setShowPass
                             />
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} lg={6} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Segundo Nombre" required={false} />
-                        <FormControl fullWidth margin="normal" required sx={{ marginBottom: "1.5em !important" }}>
-                            <TextField
-                                placeholder='Segundo Nombre'
-                                name="middleName"
-                                id="middleName"
-                                type="text"
-                                variant="outlined"
-                                value={formik.values.middleName}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.middleName && Boolean(formik.errors.middleName)}
-                                helperText={formik.touched.middleName && formik.errors.middleName}
-                            />
-                        </FormControl>
-                    </Grid>
-
-                </Grid>
-            </Box>
-
-            <Box>
-                <Grid container spacing={0}>
 
                     <Grid item xs={12} lg={6} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Primer Apellido" required={true} />
+                        <CustomLabel name="Apellido" required={true} />
                         <FormControl fullWidth margin="normal" required sx={{ marginBottom: "1.5em !important" }}>
                             <TextField
-                                placeholder='Primer Apellido'
+                                placeholder='Apellido'
                                 name="lastName"
                                 id="lastName"
                                 type="text"
@@ -113,23 +90,6 @@ const UserRegistrationForm = ({ formik, questionsList, showPassword, setShowPass
                                 onBlur={formik.handleBlur}
                                 error={formik.touched.lastName && Boolean(formik.errors.lastName)}
                                 helperText={formik.touched.lastName && formik.errors.lastName}
-                            />
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={12} lg={6} sx={{ paddingX: '1rem' }}>
-                        <CustomLabel name="Segundo Apellido" required={false} />
-                        <FormControl fullWidth margin="normal" required sx={{ marginBottom: "1.5em !important" }}>
-                            <TextField
-                                placeholder='Segundo Apellido'
-                                name="secondLastName"
-                                id="secondLastName"
-                                type="text"
-                                variant="outlined"
-                                value={formik.values.secondLastName}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
-                                error={formik.touched.secondLastName && Boolean(formik.errors.secondLastName)}
-                                helperText={formik.touched.secondLastName && formik.errors.secondLastName}
                             />
                         </FormControl>
                     </Grid>
